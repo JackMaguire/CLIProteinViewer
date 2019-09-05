@@ -17,16 +17,16 @@ int main()
   newSettings.c_lflag &= (~ICANON & ~ECHO);
   tcsetattr( fileno( stdin ), TCSANOW, &newSettings );    
 
-  int abc = 0;
+  //int abc = 0;
 
   while ( 1 )
     {
-      const std::string test("\033[0;" + std::to_string(abc) + "m");
-      const std::string reset("\033[0m");
-      ++abc;
-      abc %= 256;
+      //const std::string test("\033[0;" + std::to_string(abc) + "m");
+      //const std::string reset("\033[0m");
+      //++abc;
+      //abc %= 256;
 
-      std::cout << test << "TESTING" << reset << std::endl;
+      //std::cout << test << "TESTING" << reset << std::endl;
 
       fd_set set;
       struct timeval tv;
