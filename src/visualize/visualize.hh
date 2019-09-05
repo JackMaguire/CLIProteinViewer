@@ -26,15 +26,28 @@ struct Screen {
   Screen(){
     struct winsize size;
     ioctl(STDOUT_FILENO,TIOCGWINSZ,&size);
-    auto const nrows = size.ws_row;
     auto const ncols = size.ws_col;
-    pixels.resize( nrows );
+    auto const nrows = size.ws_row;
+    pixels.resize( ncols );
     for( std::vector< Pixel > & v : pixels ){
-      pixels.resize( );
+      pixels.resize( nrows );
     }
   }
 
-  std::vector< std::vector< Pixel > > pixels; //outer vec is width, inner is height
+  int height() const { return pixels.size(); }
+
+  int width() const { return pixels[0].size(); }
+
+  Pixel & pixel( int h, int w ){ return pixels[h][w]; }
+
+  Pixel const & pixel( int h, int w ) const { return pixels[h][w]; }
+
+  std::vector< std::vector< Pixel > > pixels; //outer vec is height, inner is width
 };
 
 void
+draw(
+  Screen const & screen
+){
+  for( )
+}
