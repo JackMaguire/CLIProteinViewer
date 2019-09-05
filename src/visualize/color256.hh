@@ -40,37 +40,6 @@ struct Color {
   bool is_system() const { return code < 16; }
 };
 
-struct CustomColorMatcher {
-  std::vector< Color > colors;
-
-  void add_color( int r, int g, int b, int code ){
-    colors.emplace_back( r, g, b, code );
-  }
-
-  int determine_closest_code( int r, int g, int b, bool must_be_system = false ) const {
-    int closest_code = 0;
-    float closest_score = 999;
-
-    for( unsigned i = 0; i < colors.size(); ++i ){
-      Color const & c = colors[ i ];
-      if( must_be_system && ! c.is_system() ) break;
-
-      float const r_diff = c.r - r;
-      float const g_diff = c.g - g;
-      float const b_diff = c.b - b;
-      float const diff_sq = (r_diff*r_diff) + (g_diff*g_diff) + (b_diff*b_diff);
-      if( diff_sq < closest_score ){
-	closest_score = diff_sq;
-	closest_code = c.code;
-      }
-    }
-
-    return closest_code;
-  }
-
-  unsigned int num_colors() const { return colors.size() };
-}
-
 struct ColorMatcher {
 
   std::array< Color, 256 > colors;

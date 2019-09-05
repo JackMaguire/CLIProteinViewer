@@ -1,4 +1,5 @@
-#include <visualize/color256.hh>
+#pragma once
+//#include <visualize/color256.hh>
 
 #include <vector.hh>
 
@@ -28,7 +29,8 @@ struct Pixel {
   int g;
   int b;
 
-  int determine_closest_code( color256::ColorMatcher const & matcher ){
+  template< typename Matcher >
+  int determine_closest_code( Matcher const & matcher ){
     return matcher.determine_closest_code( r, g, b );
   }
 };
@@ -54,6 +56,8 @@ struct Screen {
   Pixel const & pixel( int h, int w ) const { return pixels[h][w]; }
 
   std::vector< std::vector< Pixel > > pixels; //outer vec is height, inner is width
+
+  void set_to_splash_screen();
 };
 
 void
@@ -65,6 +69,28 @@ draw(
       std::cout << "COLOR" << "MAGIC";
     }
     std::cout << std::endl;
+  }
+}
+
+inline
+void
+Screen::set_to_splash_screen(){
+  int const w_max = width();
+  int const h_max = height();
+
+  for( int w = 0; w < w_max; ++w ){
+    for( int h = 0; h < h_max; ++h ){
+      Pixel p = pixel( h, w );
+
+      //r aligns with width
+      p.r = (float(w) / w_max) * 256;
+
+      //g aligns with height
+      p.g = (float(h) / h_max) * 256;
+
+      //b aligns with h+w
+      p.b = (float(w+h) / (w_max + h_max) ) * 256;
+    }
   }
 }
 
