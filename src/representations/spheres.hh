@@ -5,16 +5,47 @@
 #include <string>
 #include <fstream>
 #include <algorithm>
+#include <assert.h>
+#include <stdlib.h> //abs
+#include <math.h>
 
 namespace CLIProteinViewer {
 namespace spheres {
 
 struct XYZ {
+  XYZ() = default;
+  XYZ( XYZ const & src ) = default;
+  XYZ( XYZ & src ) = default;
+
+  XYZ( double X, double Y, double Z ) :
+    x( X ),
+    y( Y ),
+    z( Z )
+  {}
+
   double x = 0.0;
   double y = 0.0;
   double z = 0.0;
+
+  void normalize() {
+    double const l = sqrt( x*x + y*y + z*z );
+    x /= l;
+    y /= l;
+    z /= l;
+  }
+
+  double & operator[]( size_t const i ){
+    switch( i ){
+    case 0: return x;
+    case 1: return y;
+    case 2: return z;
+    default: assert( false );
+    }
+  }
+
 };
 
+/*
 struct Sphere {
 
   Sphere() = default;
@@ -28,11 +59,30 @@ struct Sphere {
     atom( A )
   {}
 
-  
+  XYZ center() const{
+    return XYZ( x, y, z );
+  }
 
   double x = 0.0;
   double y = 0.0;
   double z = 0.0;
+
+  char atom = 'X';
+  //bool is_hydrogen = false;
+
+};
+*/
+
+struct Sphere : public XYZ {
+
+  Sphere() = default;
+  Sphere( Sphere const & src ) = default;
+  Sphere( Sphere && src ) = default;
+
+  Sphere( double X, double Y, double Z, char A ) :
+    XYZ( X, Y, Z ),
+    atom( A )
+  {}
 
   char atom = 'X';
   //bool is_hydrogen = false;
@@ -101,6 +151,15 @@ struct Pose {
 	  s.z /= max_scale;
 	}
       }
+
+      //asserts
+      XYZ const new_origin = calc_origin( x_span, y_span, z_span );
+      assert( abs( new_origin.x ) < 0.001 );
+      assert( abs( new_origin.y ) < 0.001 );
+      assert( abs( new_origin.z ) < 0.001 );
+      assert( x_span < 1.01 );
+      assert( y_span < 1.01 );
+      assert( z_span < 1.01 );
     }
 
   }
