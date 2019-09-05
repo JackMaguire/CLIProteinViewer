@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <fstream>
+#include <algorithm>
 
 namespace CLIProteinViewer {
 namespace spheres {
@@ -49,7 +50,7 @@ struct Chain {
   //int chain_id = -1;
 
   std::vector< Sphere > heavy_atoms;
-  std::vector< Sphere > hydrogens_atoms;
+  std::vector< Sphere > hydrogen_atoms;
 };
 
 struct Pose {
@@ -58,7 +59,51 @@ struct Pose {
   Pose( Pose const & src ) = default;
   Pose( Pose && src ) = default;
 
+  Pose( std::string const & filename ){
+    load_from_pdb_file( filename );
+  }
+
   std::map< std::string, Chain > chains;
+
+  void
+  normalize_pose(
+    bool const position = true,
+    bool const scale = true
+  ) {
+    double x_span = -1.0;
+    double y_span = -1.0;
+    double z_span = -1.0;
+    double max_scale = std::max( x_span, std::max( y_span, z_span ) );
+    XYZ const origin = calc_origin( x_span, y_span, z_span );
+
+    for( auto const & pair : chains ){
+      for( Sphere const & s : pair.second.hydrogen_atoms ){
+	if( position ){
+	  s.x -= origin.x;
+	  s.y -= origin.y;
+	  s.z -= origin.z;
+	}
+	if( scale ){
+	  s.x /= max_scale;
+	  s.y /= max_scale;
+	  s.z /= max_scale;
+	}
+      }
+      for( Sphere const & s : pair.second.heavy_atoms ){
+	if( position ){
+	  s.x -= origin.x;
+	  s.y -= origin.y;
+	  s.z -= origin.z;
+	}
+	if( scale ){
+	  s.x /= max_scale;
+	  s.y /= max_scale;
+	  s.z /= max_scale;
+	}
+      }
+    }
+
+  }
 
   Pose
   create_transformed_pose(
@@ -180,7 +225,7 @@ struct Pose {
       }
 
       if( element == 'H' ){
-	previous_chain->hydrogens_atoms.emplace_back( x, y, z, element );
+	previous_chain->hydrogen_atoms.emplace_back( x, y, z, element );
       } else {
 	previous_chain->heavy_atoms.emplace_back( x, y, z, element );
       }
