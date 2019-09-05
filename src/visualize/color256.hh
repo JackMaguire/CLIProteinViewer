@@ -10,36 +10,6 @@
 namespace CLIProteinViewer {
 namespace color256 {
 
-struct Color {
-  Color() :
-    r( 0 ),
-    g( 0 ),
-    b( 0 ),
-    code( 0 )
-  {}
-
-  Color( int R, int G, int B, int Code ) :
-    r( R ),
-    g( G ),
-    b( B ),
-    code( Code )
-  {}
-
-  Color( Color const & src ):
-    r( src.r ),
-    g( src.g ),
-    b( src.b ),
-    code( src.code )
-  {}
-
-  int r;
-  int g;
-  int b;
-  int code;
-
-  bool is_system() const { return code < 16; }
-};
-
 struct ColorMatcher {
 
   std::array< Color, 256 > colors;

@@ -1,7 +1,6 @@
 #pragma once
-//#include <visualize/color256.hh>
 
-#include <vector.hh>
+#include <vector>
 
 #include <iostream>
 
@@ -38,12 +37,12 @@ struct Pixel {
 struct Screen {
   Screen(){
     struct winsize size;
-    ioctl(STDOUT_FILENO,TIOCGWINSZ,&size);
+    ioctl( STDOUT_FILENO, TIOCGWINSZ, &size );
     auto const ncols = size.ws_col;
     auto const nrows = size.ws_row;
-    pixels.resize( ncols );
+    pixels.resize( nrows );
     for( std::vector< Pixel > & v : pixels ){
-      pixels.resize( nrows );
+      v.resize( ncols );
     }
   }
 
@@ -80,7 +79,7 @@ Screen::set_to_splash_screen(){
 
   for( int w = 0; w < w_max; ++w ){
     for( int h = 0; h < h_max; ++h ){
-      Pixel p = pixel( h, w );
+      Pixel & p = pixel( h, w );
 
       //r aligns with width
       p.r = (float(w) / w_max) * 256;

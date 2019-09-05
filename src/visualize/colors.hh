@@ -11,7 +11,7 @@
 namespace CLIProteinViewer {
 namespace color {
 
-struct MagicNumbers {
+namespace MagicNumbers {
   //attr
   constexpr int  RESET =    0;
   constexpr int  BRIGHT =   1;
@@ -34,7 +34,71 @@ struct MagicNumbers {
   constexpr int DIMGAP = 100;//gap to designate dimming
 }
 
-  void textcolor(int attr, int fg, int bg);
+struct Color {
+  Color() :
+    r( 0 ),
+    g( 0 ),
+    b( 0 ),
+    code( 0 )
+  {}
+
+  Color( int R, int G, int B, int Code ) :
+    r( R ),
+    g( G ),
+    b( B ),
+    code( Code )
+  {}
+
+  Color( Color const & src ):
+    r( src.r ),
+    g( src.g ),
+    b( src.b ),
+    code( src.code )
+  {}
+
+  int r;
+  int g;
+  int b;
+  int code;
+
+  bool is_system() const { return code < 16; }
+};
+
+struct CustomColorMatcher {
+  std::vector< Color > colors;
+
+  void add_color( int r, int g, int b, int code ){
+    colors.emplace_back( r, g, b, code );
+  }
+
+  int determine_closest_code( int r, int g, int b, bool must_be_system = false ) const {
+    int closest_code = 0;
+    float closest_score = 9999999999999999;
+
+    //std::cout << r << " " << g << " " << b << std::endl;
+    for( unsigned i = 0; i < colors.size(); ++i ){
+      Color const & c = colors[ i ];
+      if( must_be_system && ! c.is_system() ) break;
+
+      float const r_diff = c.r - r;
+      float const g_diff = c.g - g;
+      float const b_diff = c.b - b;
+      float const diff_sq = (r_diff*r_diff) + (g_diff*g_diff) + (b_diff*b_diff);
+
+      //std::cout << diff_sq << " " << closest_code << std::endl;
+
+      if( diff_sq < closest_score ){
+	closest_score = diff_sq;
+	closest_code = c.code;
+      }
+    }
+
+    return closest_code;
+  }
+
+  unsigned int num_colors() const { return colors.size(); }
+};
+
 
 void textcolor(int attr, int fg, int bg) {
   char command[13];
@@ -46,7 +110,7 @@ void textcolor(int attr, int fg, int bg) {
 
 void print_nearest_color( int r, int g, int b ){
   static CustomColorMatcher ccm;
-  if( ccm.num_colors() ==  ){
+  if( ccm.num_colors() == 0 ){
     ccm.add_color( 0, 0, 0, MagicNumbers::BLACK );
     ccm.add_color( 255, 0, 0, MagicNumbers::RED );
     ccm.add_color( 0, 255, 0, MagicNumbers::GREEN );
@@ -75,41 +139,16 @@ void print_nearest_color( int r, int g, int b ){
     textcolor( MagicNumbers::BRIGHT, code, MagicNumbers::BLACK);
   }
 
+  //printf( std::to_string(code).c_str() );
+  printf( "X" );
+
   //reset
   textcolor( MagicNumbers::RESET, MagicNumbers::WHITE, MagicNumbers::BLACK );
 }
 
-struct CustomColorMatcher {
-  std::vector< Color > colors;
-
-  void add_color( int r, int g, int b, int code ){
-    colors.emplace_back( r, g, b, code );
-  }
-
-  int determine_closest_code( int r, int g, int b, bool must_be_system = false ) const {
-    int closest_code = 0;
-    float closest_score = 999;
-
-    for( unsigned i = 0; i < colors.size(); ++i ){
-      Color const & c = colors[ i ];
-      if( must_be_system && ! c.is_system() ) break;
-
-      float const r_diff = c.r - r;
-      float const g_diff = c.g - g;
-      float const b_diff = c.b - b;
-      float const diff_sq = (r_diff*r_diff) + (g_diff*g_diff) + (b_diff*b_diff);
-      if( diff_sq < closest_score ){
-	closest_score = diff_sq;
-	closest_code = c.code;
-      }
-    }
-
-    return closest_code;
-  }
-
-  unsigned int num_colors() const { return colors.size() };
+void print_nearest_color( visualize::Pixel const & p ){
+  print_nearest_color( p.r, p.g, p.b );
 }
-
 
 /*
   int main() {
