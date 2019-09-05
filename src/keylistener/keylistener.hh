@@ -57,30 +57,30 @@ enum class Key {
 Key
 parse_int( int const command ){
   switch( command ){
-  case LEFT_keys[2]: return LEFT;
-  case RIGHT_keys[2]: return RIGHT;
-  case UP_keys[2]: return UP;
-  case DOWN_keys[2]: return DOWN;
+  case LEFT_keys[2]: return Key::LEFT;
+  case RIGHT_keys[2]: return Key::RIGHT;
+  case UP_keys[2]: return Key::UP;
+  case DOWN_keys[2]: return Key::DOWN;
 
-  case ONE_key: return ONE;
-  case TWO_key: return TWO;
-  case THREE_key: return THREE;
-  case FOUR_key: return FOUR;
-  case FIVE_key: return FIVE;
-  case SIX_key: return SIX;
-  case SEVEN_key: return SEVEN;
-  case EIGHT_key: return EIGHT;
-  case NINE_key: return NINE;
-  case ZERO_key: return ZERO;
+  case ONE_key: return Key::ONE;
+  case TWO_key: return Key::TWO;
+  case THREE_key: return Key::THREE;
+  case FOUR_key: return Key::FOUR;
+  case FIVE_key: return Key::FIVE;
+  case SIX_key: return Key::SIX;
+  case SEVEN_key: return Key::SEVEN;
+  case EIGHT_key: return Key::EIGHT;
+  case NINE_key: return Key::NINE;
+  case ZERO_key: return Key::ZERO;
 
-  case W_key: return W;
-  case S_key: return S;
-  case A_key: return A;
-  case D_key: return D;
+  case W_key: return Key::W;
+  case S_key: return Key::S;
+  case A_key: return Key::A;
+  case D_key: return Key::D;
 
-  default: return NONE;
+  default: return Key::NONE;
   };
-  return NONE;
+  return Key::NONE;
 }
 
 }//namespace
