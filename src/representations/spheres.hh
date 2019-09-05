@@ -39,6 +39,11 @@ struct Sphere {
 };
 
 struct Chain {
+
+  Chain() = default;
+  Chain( Chain const & src ) = default;
+  Chain( Chain && src ) = default;
+
   char chain = ' ';
   std::string chain_name = "foo";
   //int chain_id = -1;
@@ -48,7 +53,23 @@ struct Chain {
 };
 
 struct Pose {
+
+  Pose() = default;
+  Pose( Pose const & src ) = default;
+  Pose( Pose && src ) = default;
+
   std::map< std::string, Chain > chains;
+
+  Pose
+  create_transformed_pose(
+    double rot1,
+    double rot2,
+    double rot3
+  ) {
+    //TODO
+    Pose p;
+    return p;
+  }
 
   XYZ
   calc_origin() const {
@@ -71,7 +92,6 @@ struct Pose {
 
     return origin;
   }
-
 
   XYZ
   calc_origin(
