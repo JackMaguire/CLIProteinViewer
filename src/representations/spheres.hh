@@ -8,6 +8,12 @@
 namespace CLIProteinViewer {
 namespace spheres {
 
+struct XYZ {
+  double x = 0.0;
+  double y = 0.0;
+  double z = 0.0;
+};
+
 struct Sphere {
 
   Sphere() = default;
@@ -43,6 +49,72 @@ struct Chain {
 
 struct Pose {
   std::map< std::string, Chain > chains;
+
+  XYZ
+  calc_origin() const {
+    XYZ origin;
+    double atom_count = 0;
+
+    for( auto const & pair : chains ){
+      //just do heavy atoms for now
+      for( Sphere const & s : pair.second.heavy_atoms ){
+	origin.x += s.x;
+	origin.y += s.y;
+	origin.z += s.z;
+      }
+      atom_count += pair.second.heavy_atoms.size();
+    }
+
+    origin.x /= atom_count;
+    origin.y /= atom_count;
+    origin.z /= atom_count;
+
+    return origin;
+  }
+
+
+  XYZ
+  calc_origin(
+    double & x_span,
+    double & y_span,
+    double & z_span
+  ) const {
+    XYZ origin;
+    double atom_count = 0;
+
+    double max_x_value = -999999;
+    double min_x_value = 999999;
+    double max_y_value = -999999;
+    double min_y_value = 999999;
+    double max_z_value = -999999;
+    double min_z_value = 999999;
+
+    for( auto const & pair : chains ){
+      //just do heavy atoms for now
+      for( Sphere const & s : pair.second.heavy_atoms ){
+	origin.x += s.x;
+	origin.y += s.y;
+	origin.z += s.z;
+
+	if( s.x > max_x_value ) max_x_value = s.x;
+	if( s.x < min_x_value ) min_x_value = s.x;
+	if( s.y > max_y_value ) max_y_value = s.y;
+	if( s.y < min_y_value ) min_y_value = s.y;
+	if( s.z > max_z_value ) max_z_value = s.z;
+	if( s.z < min_z_value ) min_z_value = s.z;
+      }
+      atom_count += pair.second.heavy_atoms.size();
+    }
+
+    origin.x /= atom_count;
+    origin.y /= atom_count;
+    origin.z /= atom_count;
+
+    x_span = max_x_value - min_x_value;
+    y_span = max_y_value - min_y_value;
+    z_span = max_z_value - min_z_value;
+    return origin;
+  }
 
   //Note this does not reset the Pose.
   //Technically possible to load from multiple files
