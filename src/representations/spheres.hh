@@ -123,8 +123,8 @@ struct Pose {
     double x_span = -1.0;
     double y_span = -1.0;
     double z_span = -1.0;
-    double max_scale = std::max( x_span, std::max( y_span, z_span ) );
     XYZ const origin = calc_origin( x_span, y_span, z_span );
+    double const max_scale = std::max( x_span, std::max( y_span, z_span ) );
 
     for( auto & pair : chains ){
       for( Sphere & s : pair.second.hydrogen_atoms ){
@@ -154,9 +154,9 @@ struct Pose {
 
       //asserts
       XYZ const new_origin = calc_origin( x_span, y_span, z_span );
-      assert( abs( new_origin.x ) < 0.001 );
-      assert( abs( new_origin.y ) < 0.001 );
-      assert( abs( new_origin.z ) < 0.001 );
+      assert( abs( new_origin.x ) < 0.01 );
+      assert( abs( new_origin.y ) < 0.01 );
+      assert( abs( new_origin.z ) < 0.01 );
       assert( x_span < 1.01 );
       assert( y_span < 1.01 );
       assert( z_span < 1.01 );

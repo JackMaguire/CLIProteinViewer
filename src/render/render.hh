@@ -25,6 +25,7 @@ determine_color(
   pixel.b = 0;
 
   switch( chain_id ){
+  case( -1 ): break;
   case( 0 ): pixel.r = 255; break;
   case( 1 ): pixel.g = 255; break;
   case( 2 ): pixel.b = 255; break;
