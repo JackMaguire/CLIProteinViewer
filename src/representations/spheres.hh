@@ -126,8 +126,8 @@ struct Pose {
     double max_scale = std::max( x_span, std::max( y_span, z_span ) );
     XYZ const origin = calc_origin( x_span, y_span, z_span );
 
-    for( auto const & pair : chains ){
-      for( Sphere const & s : pair.second.hydrogen_atoms ){
+    for( auto & pair : chains ){
+      for( Sphere & s : pair.second.hydrogen_atoms ){
 	if( position ){
 	  s.x -= origin.x;
 	  s.y -= origin.y;
@@ -139,7 +139,7 @@ struct Pose {
 	  s.z /= max_scale;
 	}
       }
-      for( Sphere const & s : pair.second.heavy_atoms ){
+      for( Sphere & s : pair.second.heavy_atoms ){
 	if( position ){
 	  s.x -= origin.x;
 	  s.y -= origin.y;
@@ -264,12 +264,12 @@ struct Pose {
       //Z = 46-53 (inclusive, 0-indexed)
       //Element = 76-77 (inclusive, 0-indexed)
 
-      char const chain = str.substr( 21, 1 );
+      char const chain = str.substr( 21, 1 )[0];
       double const x = std::stod( str.substr( 30, 8 ) );
       double const y = std::stod( str.substr( 38, 8 ) );
       double const z = std::stod( str.substr( 46, 8 ) );
       //std::string
-      char const element = str.substr( 77, 1 );//ignore 2-char elements?
+      char const element = str.substr( 77, 1 )[0];//ignore 2-char elements?
 
       if( chain == previous_chain_name && previous_chain != nullptr ){
 	//Nothing to do here?
@@ -280,7 +280,7 @@ struct Pose {
 	new_chain->chain = chain;
 	new_chain->chain_name = name_for_map;
 	previous_chain_name = chain;
-	previous_chain = new_chain
+	previous_chain = new_chain;
       }
 
       if( element == 'H' ){

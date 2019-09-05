@@ -11,8 +11,8 @@
 namespace CLIProteinViewer {
 namespace render {
 
-constexpr CAMERA_X = -10.0;
-constexpr ABS_CAMERA_X = 10.0;
+constexpr double CAMERA_X = -10.0;
+constexpr double ABS_CAMERA_X = 10.0;
 
 void
 determine_color(
@@ -46,7 +46,7 @@ bool ray_intersect(
   spheres::XYZ const & dir,
   spheres::Sphere const & sphere,
   double & t0
-) const {
+) {
   spheres::XYZ const L = sphere - orig;
   double const tca = L * dir;
   double d2 = L*L - tca*tca;
@@ -76,7 +76,7 @@ cast_ray(
   int chain_id = 0;
   double t0 = 0;
   for( auto const & pair : pose.chains ){
-    for( Sphere const & s : pair.second.heavy_atoms ){
+    for( spheres::Sphere const & s : pair.second.heavy_atoms ){
       if( ray_intersect( camera_position, ray_direction, s, t0 ) ){
 	if( t0 < closest_distance || chain_id_for_closest_atom == -1 ){
 	  //closest_atom = &s;
@@ -94,7 +94,8 @@ cast_ray(
 void
 draw_pose_on_screen(
   spheres::Pose const & pose,
-  visualize::Screen & screen
+  visualize::Screen & screen,
+  bool skip_hydrogens = true
 ) {
   spheres::XYZ const camera_position = { CAMERA_X, 0.0, 0.0 };
 
@@ -112,7 +113,7 @@ draw_pose_on_screen(
       spheres::XYZ ray = { dir_x, dir_y, dir_z };
       ray.normalize();
 
-      cast_ray( camera_position, ray, pose, screen.pixel( h, w ) );
+      cast_ray( camera_position, ray, pose, screen.pixel( h, w ), skip_hydrogens );
     }
   }
 }
