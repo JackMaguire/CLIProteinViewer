@@ -10,32 +10,41 @@
 
 int main()
 {
-    struct termios oldSettings, newSettings;
+  struct termios oldSettings, newSettings;
 
-    tcgetattr( fileno( stdin ), &oldSettings );
-    newSettings = oldSettings;
-    newSettings.c_lflag &= (~ICANON & ~ECHO);
-    tcsetattr( fileno( stdin ), TCSANOW, &newSettings );    
+  tcgetattr( fileno( stdin ), &oldSettings );
+  newSettings = oldSettings;
+  newSettings.c_lflag &= (~ICANON & ~ECHO);
+  tcsetattr( fileno( stdin ), TCSANOW, &newSettings );    
 
-    while ( 1 )
+  int abc = 0;
+
+  while ( 1 )
     {
-        fd_set set;
-        struct timeval tv;
+      const std::string test("\033[0;" + std::to_string(abc) + "m");
+      const std::string reset("\033[0m");
+      ++abc;
+      abc %= 256;
 
-        tv.tv_sec = 10;
-        tv.tv_usec = 0;
+      std::cout << test << "TESTING" << reset << std::endl;
 
-        FD_ZERO( &set );
-        FD_SET( fileno( stdin ), &set );
+      fd_set set;
+      struct timeval tv;
 
-        int res = select( fileno( stdin )+1, &set, NULL, NULL, &tv );
+      tv.tv_sec = 10;
+      tv.tv_usec = 0;
 
-        if( res > 0 )
+      FD_ZERO( &set );
+      FD_SET( fileno( stdin ), &set );
+
+      int res = select( fileno( stdin )+1, &set, NULL, NULL, &tv );
+
+      if( res > 0 )
         {
-            char c;
-            read( fileno( stdin ), &c, 1 );
-	    std::cout << c << " " << int(c) << " " << std::endl;
-	    /*
+	  char c;
+	  read( fileno( stdin ), &c, 1 );
+	  std::cout << c << " " << int(c) << " " << std::endl;
+	  /*
 	    Output for LDRU:
 	    27 
 	    [ 91 
@@ -49,19 +58,19 @@ int main()
 	    27 
 	    [ 91 
 	    A 65
-	    */
+	  */
         }
-        else if( res < 0 )
+      else if( res < 0 )
         {
-            perror( "select error" );
-            break;
+	  perror( "select error" );
+	  break;
         }
-        else
+      else
         {
-            printf( "Select timeout\n" );
+	  printf( "Select timeout\n" );
         }
     }
 
-    tcsetattr( fileno( stdin ), TCSANOW, &oldSettings );
-    return 0;
+  tcsetattr( fileno( stdin ), TCSANOW, &oldSettings );
+  return 0;
 }

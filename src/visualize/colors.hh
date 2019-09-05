@@ -1,0 +1,94 @@
+//https://www.dreamincode.net/forums/topic/59656-color-text-in-c-programming/page__p__394955&#entry394955
+
+#pragma once
+
+#include <stdio.h>
+#include <string>
+#include <iostream>
+
+namespace CLIProteinViewer {
+namespace color {
+
+struct MagicNumbers {
+  //attr
+  constexpr int  RESET =    0;
+  constexpr int  BRIGHT =   1;
+  constexpr int  DIM =      2;
+  constexpr int  UNDERLINE= 3;
+  constexpr int  BLINK =    4;
+  constexpr int  REVERSE =  7;
+  constexpr int  HIDDEN =   8;
+
+  //fg/bg
+  constexpr int  BLACK =    0;
+  constexpr int  RED =      1;
+  constexpr int  GREEN =    2;
+  constexpr int  YELLOW =   3;
+  constexpr int  BLUE =     4;
+  constexpr int  MAGENTA =  5;
+  constexpr int  CYAN =     6;
+  constexpr int  WHITE =    7;
+
+  constexpr int DIMGAP = 100;//gap to designate dimming
+}
+
+  void textcolor(int attr, int fg, int bg);
+
+void textcolor(int attr, int fg, int bg) {
+  char command[13];
+
+  /* Command is the control command to the terminal */
+  sprintf(command, "%c[%d;%d;%dm", 0x1B, attr, fg + 30, bg + 40);
+  printf("%s", command);
+}
+
+void print_nearest_color( int r, int g, int b ){
+  static CustomColorMatcher ccm;
+  if( ccm.num_colors() ==  ){
+    ccm.add_color( 0, 0, 0, MagicNumbers::BLACK );
+    ccm.add_color( 255, 0, 0, MagicNumbers::RED );
+    ccm.add_color( 0, 255, 0, MagicNumbers::GREEN );
+    ccm.add_color( 0, 0, 255, MagicNumbers::BLUE );
+    ccm.add_color( 255, 0, 255, MagicNumbers::MAGENTA );
+    ccm.add_color( 255, 255, 0, MagicNumbers::YELLOW );
+    ccm.add_color( 0, 255, 255, MagicNumbers::CYAN );
+    ccm.add_color( 255, 255, 255, MagicNumbers::WHITE );
+
+    //TODO:
+    ccm.add_color( 127, 0, 0, MagicNumbers::RED + MagicNumbers::DIMGAP );
+    ccm.add_color( 0, 127, 0, MagicNumbers::GREEN + MagicNumbers::DIMGAP );
+    ccm.add_color( 0, 0, 127, MagicNumbers::BLUE + MagicNumbers::DIMGAP );
+    ccm.add_color( 127, 0, 127, MagicNumbers::MAGENTA + MagicNumbers::DIMGAP );
+    ccm.add_color( 127, 127, 0, MagicNumbers::YELLOW + MagicNumbers::DIMGAP );
+    ccm.add_color( 0, 127, 127, MagicNumbers::CYAN + MagicNumbers::DIMGAP );
+    ccm.add_color( 127, 127, 127, MagicNumbers::WHITE + MagicNumbers::DIMGAP );
+
+  }
+  int code = ccm.determine_closest_code( r, g, b );
+  bool dim = code > MagicNumbers::DIMGAP;
+
+  if( dim ){    
+    textcolor( MagicNumbers::DIM, code - MagicNumbers::DIMGAP, MagicNumbers::BLACK );
+  } else {
+    textcolor( MagicNumbers::BRIGHT, code, MagicNumbers::BLACK);
+  }
+
+  //reset
+  textcolor( MagicNumbers::RESET, MagicNumbers::WHITE, MagicNumbers::BLACK );
+}
+
+/*
+  int main() {
+  //char special_char = '◼︎';
+  textcolor(BRIGHT, RED, BLACK);
+  std::cout << "X";
+  textcolor(BRIGHT, GREEN, BLACK);
+  std::cout << "X";
+  textcolor(RESET, WHITE, BLACK);
+  std::cout << std::endl;
+  return 0;
+  }
+*/
+
+}//color
+}//CLIPV

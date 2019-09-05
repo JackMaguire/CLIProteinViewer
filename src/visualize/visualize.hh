@@ -1,8 +1,15 @@
+#include <visualize/color256.hh>
+
 #include <vector.hh>
+
+#include <iostream>
 
 //From https://stackoverflow.com/questions/23369503/get-size-of-terminal-window-rows-columns
 #include <sys/ioctl.h> // For ioctl, TIOCGWINSZ
 #include <unistd.h> // For STDOUT_FILENO
+
+namespace CLIProteinViewer {
+namespace visualize {
 
 struct Pixel {
   Pixel() :
@@ -20,6 +27,10 @@ struct Pixel {
   int r;
   int g;
   int b;
+
+  int determine_closest_code( color256::ColorMatcher const & matcher ){
+    return matcher.determine_closest_code( r, g, b );
+  }
 };
 
 struct Screen {
@@ -49,5 +60,13 @@ void
 draw(
   Screen const & screen
 ){
-  for( )
+  for( std::vector< Pixel > const & row : screen.pixels ){
+    for( Pixel const & pix : row ){
+      std::cout << "COLOR" << "MAGIC";
+    }
+    std::cout << std::endl;
+  }
 }
+
+}//namespace visualize
+}//namespace CLIProteinViewer
