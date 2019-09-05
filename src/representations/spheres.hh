@@ -62,11 +62,13 @@ struct Pose {
 
   Pose
   create_transformed_pose(
-    double rot1,
-    double rot2,
-    double rot3
+    double theta_radians,
+    double phi_radians,
+    double psi_radians
   ) {
     //TODO
+    //https://math.stackexchange.com/questions/1741282/3d-calculate-new-location-of-point-after-rotation-around-origin
+    //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
     Pose p;
     return p;
   }
