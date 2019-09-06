@@ -8,11 +8,13 @@
 #include <representations/spheres.hh>
 #include <representations/sphere_math.hh>
 
+#include <iostream>
+
 namespace CLIProteinViewer {
 namespace render {
 
-constexpr double CAMERA_X = -10.0;
-constexpr double ABS_CAMERA_X = 10.0;
+constexpr double CAMERA_Z = -100.0;
+constexpr double ABS_CAMERA_Z = 100.0;
 
 void
 determine_color(
@@ -34,7 +36,7 @@ determine_color(
   default:   pixel.b = 255; pixel.r = 255; break;
   }
 
-  //TODO multiply by t0 - ABS_CAMERA_X?
+  //TODO multiply by t0 - ABS_CAMERA_Z?
 }
 
 double
@@ -70,6 +72,8 @@ cast_ray(
   visualize::Pixel & pixel,
   bool skip_hydrogens = true
 ) {
+  std::cout << ray_direction.x << " " << ray_direction.y << " " << ray_direction.z << std::endl;
+
   //Sphere * closest_atom = nullptr;
   int chain_id_for_closest_atom = -1;
   double closest_distance = 99999;
@@ -86,9 +90,24 @@ cast_ray(
 	}
       }
     }
+    if( ! skip_hydrogens ){
+      for( spheres::Sphere const & s : pair.second.hydrogen_atoms ){
+	if( ray_intersect( camera_position, ray_direction, s, t0 ) ){
+	  if( t0 < closest_distance || chain_id_for_closest_atom == -1 ){
+	    //closest_atom = &s;
+	    chain_id_for_closest_atom = chain_id;
+	    closest_distance = t0;
+	  }
+	}
+      }
+    }
     ++chain_id;
   }
 
+  //spheres::XYZ hit_position = camera_position + ( ray_direction * t0 );
+  //std::cout << "Hit a guy at " << hit_position.x << "," << hit_position.y << "," << hit_position.z << std::endl;
+
+  //std::cout << "HIT " << chain_id << std::endl;
   determine_color( chain_id_for_closest_atom, t0, pixel );
 }
 
@@ -98,12 +117,12 @@ draw_pose_on_screen(
   visualize::Screen & screen,
   bool skip_hydrogens = true
 ) {
-  spheres::XYZ const camera_position = { CAMERA_X, 0.0, 0.0 };
+  spheres::XYZ const camera_position = { 0.0, 0.0, CAMERA_Z };
 
   size_t const width = screen.width();
   size_t const height = screen.height();
 
-  constexpr double fov = M_PI / 3.0;
+  constexpr double fov = M_PI / 1000;
 
   //https://github.com/ssloy/tinyraytracer/blob/master/tinyraytracer.cpp
   for( size_t w = 0; w < width; w++ ){

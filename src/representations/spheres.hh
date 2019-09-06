@@ -153,6 +153,7 @@ struct Pose {
       }
 
       //asserts
+      /*
       XYZ const new_origin = calc_origin( x_span, y_span, z_span );
       assert( abs( new_origin.x ) < 0.01 );
       assert( abs( new_origin.y ) < 0.01 );
@@ -160,6 +161,7 @@ struct Pose {
       assert( x_span < 1.01 );
       assert( y_span < 1.01 );
       assert( z_span < 1.01 );
+      */
     }
 
   }
