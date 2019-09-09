@@ -13,8 +13,10 @@
 namespace CLIProteinViewer {
 namespace render {
 
-constexpr double CAMERA_Z = -100.0;
-constexpr double ABS_CAMERA_Z = 100.0;
+constexpr double CAMERA_Z = -10.0;
+constexpr double ABS_CAMERA_Z = 10.0;
+
+constexpr spheres::XYZ camera_position({ 0.0, 0.0, CAMERA_Z });
 
 void
 determine_color(
@@ -46,12 +48,11 @@ radius_squared_for_element( char ){
 }
 
 bool ray_intersect(
-  spheres::XYZ const & orig,
   spheres::XYZ const & dir,
   spheres::Sphere const & sphere,
   double & t0
 ) {
-  spheres::XYZ const L = sphere - orig;
+  spheres::XYZ const L = sphere - camera_position;
   double const tca = L * dir;
   double d2 = L*L - tca*tca;
   double const r2 = radius_squared_for_element( sphere.atom );
@@ -66,7 +67,6 @@ bool ray_intersect(
 
 void
 cast_ray(
-  spheres::XYZ const & camera_position,
   spheres::XYZ const & ray_direction,
   spheres::Pose const & pose,
   //visualize::Screen & screen,
@@ -83,7 +83,7 @@ cast_ray(
   double t0 = 0;
   for( auto const & pair : pose.chains ){
     for( spheres::Sphere const & s : pair.second.heavy_atoms ){
-      if( ray_intersect( camera_position, ray_direction, s, t0 ) ){
+      if( ray_intersect( ray_direction, s, t0 ) ){
 	if( t0 < closest_distance || chain_id_for_closest_atom == -1 ){
 	  //closest_atom = &s;
 	  chain_id_for_closest_atom = chain_id;
@@ -93,7 +93,7 @@ cast_ray(
     }
     if( ! skip_hydrogens ){
       for( spheres::Sphere const & s : pair.second.hydrogen_atoms ){
-	if( ray_intersect( camera_position, ray_direction, s, t0 ) ){
+	if( ray_intersect( ray_direction, s, t0 ) ){
 	  if( t0 < closest_distance || chain_id_for_closest_atom == -1 ){
 	    //closest_atom = &s;
 	    chain_id_for_closest_atom = chain_id;
@@ -118,7 +118,7 @@ draw_pose_on_screen(
   visualize::Screen & screen,
   bool skip_hydrogens = true
 ) {
-  spheres::XYZ const camera_position = { 0.0, 0.0, CAMERA_Z };
+  //spheres::XYZ const camera_position = { 0.0, 0.0, CAMERA_Z };
 
   size_t const width = screen.width();
   size_t const height = screen.height();
@@ -134,7 +134,7 @@ draw_pose_on_screen(
       spheres::XYZ ray = { dir_x, dir_y, dir_z };
       ray.normalize();
 
-      cast_ray( camera_position, ray, pose, screen.pixel( h, w ), skip_hydrogens );
+      cast_ray( ray, pose, screen.pixel( h, w ), skip_hydrogens );
     }
   }
 }

@@ -5,6 +5,11 @@
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::spheres;
 
+template< typename T >
+void assert_close( T const t1, T const t2 ){
+  assert( abs( t1 - t2 ) > 0.001 );
+}
+
 void run_normalization_test1(){
   Pose p;
   p.chains[ "UNIT_TEST" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'Y' );
@@ -60,8 +65,33 @@ void run_normalization_test3(){
   assert( origin2.z == 0.0 );
 }
 
+void run_ray_cast_test1(){
+  constexpr Sphere s( 0.0, 0.0, 0.0, 'Y' );
+  //Pose p;
+  //p.chains[ "UNIT_TEST" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'Y' );
+
+  //Test origin
+  XYZ const origin = p.calc_origin();
+  assert( origin.x == 0.0 );
+  assert( origin.y == 0.0 );
+  assert( origin.z == 0.0 );
+
+  constexpr double dir_x =  0.0;
+  constexpr double dir_y =  0.0;
+  constexpr double dir_z =  1.0;
+  constexpr spheres::XYZ ray = { dir_x, dir_y, dir_z };
+  
+  double t0 = -100;
+  bool const intersect = render::ray_intersect( ray, s, t0 );
+
+  assert( intersect );
+  assert_close( t0, TODO );
+}
+
 int main(){
   run_normalization_test1();
   run_normalization_test2();
   run_normalization_test3();
+
+  run_ray_cast_test1();
 }
