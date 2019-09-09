@@ -41,6 +41,7 @@ determine_color(
 
 double
 radius_squared_for_element( char ){
+  //TODO implement scaling factor
   return 4.0;
 }
 
