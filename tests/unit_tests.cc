@@ -5,7 +5,7 @@
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::spheres;
 
-void run_test1(){
+void run_normalization_test1(){
   Pose p;
   p.chains[ "UNIT_TEST" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'Y' );
 
@@ -23,7 +23,7 @@ void run_test1(){
   assert( origin2.z == 0.0 );
 }
 
-void run_test2(){
+void run_normalization_test2(){
   Pose p;
   p.chains[ "UNIT_TEST" ].heavy_atoms.emplace_back( 1.0, 2.0, 3.0, 'Y' );
 
@@ -41,7 +41,7 @@ void run_test2(){
   assert( origin2.z == 0.0 );
 }
 
-void run_test3(){
+void run_normalization_test3(){
   Pose p;
   p.chains[ "UNIT_TEST"  ].heavy_atoms.emplace_back( 1.0, 2.0, 3.0, 'Y' );
   p.chains[ "UNIT_TEST2" ].heavy_atoms.emplace_back( 3.0, 2.0, 3.0, 'Z' );
@@ -61,7 +61,7 @@ void run_test3(){
 }
 
 int main(){
-  run_test1();
-  run_test2();
-  run_test3();
+  run_normalization_test1();
+  run_normalization_test2();
+  run_normalization_test3();
 }
