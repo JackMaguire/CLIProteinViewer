@@ -49,9 +49,9 @@ void run_normalization_test2(){
 
   //Test origin
   XYZ const origin = p.calc_origin();
-  assert_equals( origin.x, 0.0, __LINE__ );
-  assert_equals( origin.y, 0.0, __LINE__ );
-  assert_equals( origin.z, 0.0, __LINE__ );
+  assert_equals( origin.x, 1.0, __LINE__ );
+  assert_equals( origin.y, 2.0, __LINE__ );
+  assert_equals( origin.z, 3.0, __LINE__ );
 
   //Test origin after normalization
   p.normalize_pose();
@@ -68,16 +68,16 @@ void run_normalization_test3(){
 
   //Test origin
   XYZ const origin = p.calc_origin();
-  assert_equals( origin.x, 0.0, __LINE__ );
-  assert_equals( origin.y, 0.0, __LINE__ );
-  assert_equals( origin.z, 0.0, __LINE__ );
+  assert_equals( origin.x, 2.0, __LINE__ );
+  assert_equals( origin.y, 2.0, __LINE__ );
+  assert_equals( origin.z, 3.0, __LINE__ );
 
   //Test origin after normalization
   p.normalize_pose();
   XYZ const origin2 = p.calc_origin();
-  assert_equals( origin2.x, 0.0, __LINE__ );
-  assert_equals( origin2.y, 0.0, __LINE__ );
-  assert_equals( origin2.z, 0.0, __LINE__ );
+  assert_close( origin2.x, 0.0, __LINE__ );
+  assert_close( origin2.y, 0.0, __LINE__ );
+  assert_close( origin2.z, 0.0, __LINE__ );
 
 }
 
