@@ -41,12 +41,6 @@ determine_color(
   //TODO multiply by t0 - ABS_CAMERA_Z?
 }
 
-double
-radius_squared_for_element( char ){
-  //TODO implement scaling factor
-  return 4.0;
-}
-
 bool ray_intersect(
   spheres::XYZ const & dir,
   spheres::Sphere const & sphere,
@@ -55,7 +49,7 @@ bool ray_intersect(
   spheres::XYZ const L = sphere - camera_position;
   double const tca = L * dir;
   double d2 = L*L - tca*tca;
-  double const r2 = radius_squared_for_element( sphere.atom );
+  double const r2 = sphere.radius * sphere.radius;
   if( d2 > r2 ) return false;
   double const thc = sqrtf( r2 - d2);
   t0       = tca - thc;

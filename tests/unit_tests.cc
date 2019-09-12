@@ -5,6 +5,11 @@
 
 #include <iostream>
 
+#define LOGGER std::cout << __FUNCTION__ << " "
+
+#define START LOGGER << "begin" << std::endl
+#define END   LOGGER << "end" << std::endl
+
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::spheres;
 
@@ -26,6 +31,7 @@ void assert_close( T const t1, T const t2, int const line_num ){
 }
 
 void run_normalization_test1(){
+  START;
   Pose p;
   p.chains[ "UNIT_TEST" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'Y' );
 
@@ -41,9 +47,11 @@ void run_normalization_test1(){
   assert_equals( origin2.x, 0.0, __LINE__ );
   assert_equals( origin2.y, 0.0, __LINE__ );
   assert_equals( origin2.z, 0.0, __LINE__ );
+  END;
 }
 
 void run_normalization_test2(){
+  START;
   Pose p;
   p.chains[ "UNIT_TEST" ].heavy_atoms.emplace_back( 1.0, 2.0, 3.0, 'Y' );
 
@@ -59,9 +67,11 @@ void run_normalization_test2(){
   assert_equals( origin2.x, 0.0, __LINE__ );
   assert_equals( origin2.y, 0.0, __LINE__ );
   assert_equals( origin2.z, 0.0, __LINE__ );
+  END;
 }
 
 void run_normalization_test3(){
+  START;
   Pose p;
   p.chains[ "UNIT_TEST"  ].heavy_atoms.emplace_back( 1.0, 2.0, 3.0, 'Y' );
   p.chains[ "UNIT_TEST2" ].heavy_atoms.emplace_back( 3.0, 2.0, 3.0, 'Z' );
@@ -78,13 +88,15 @@ void run_normalization_test3(){
   assert_close( origin2.x, 0.0, __LINE__ );
   assert_close( origin2.y, 0.0, __LINE__ );
   assert_close( origin2.z, 0.0, __LINE__ );
-
+  END;
 }
 
 void run_ray_cast_test1(){
+  START;
   // double R = 1.0;
   std::array< double, 5 > Rs({ 1.0, 2.0, 3.0, 4.0, 5.0 });
-  for(  unsigned i = 0; i < Rs.size(); ++i ){
+  for( unsigned i = 0; i < Rs.size(); ++i ){
+    LOGGER << "i == " << i << std::endl;
     double R = Rs[ i ];
     Sphere s( 0.0, 0.0, 0.0, 'Y', R );
 
@@ -101,6 +113,7 @@ void run_ray_cast_test1(){
     double const expected_distance = CLIProteinViewer::render::ABS_CAMERA_Z - s.radius;
     assert_close( t0, expected_distance, __LINE__ );
   }
+  END;
 }
 
 
