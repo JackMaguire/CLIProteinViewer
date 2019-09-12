@@ -75,11 +75,11 @@ struct Sphere {
 
 struct Sphere : public XYZ {
 
-  Sphere() = default;
-  Sphere( Sphere const & src ) = default;
-  Sphere( Sphere && src ) = default;
+  constexpr Sphere() = default;
+  constexpr Sphere( Sphere const & src ) = default;
+  constexpr Sphere( Sphere && src ) = default;
 
-  Sphere( double X, double Y, double Z, char A ) :
+  constexpr Sphere( double X, double Y, double Z, char A ) :
     XYZ( X, Y, Z ),
     atom( A )
   {}
