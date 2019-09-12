@@ -18,7 +18,7 @@ struct XYZ {
   constexpr XYZ( XYZ & src ) = default;
 
   constexpr XYZ( double X, double Y, double Z ) :
-    x( X ),
+  x( X ),
     y( Y ),
     z( Z )
   {}
@@ -46,21 +46,21 @@ struct XYZ {
 };
 
 /*
-struct Sphere {
+  struct Sphere {
 
   Sphere() = default;
   Sphere( Sphere const & src ) = default;
   Sphere( Sphere && src ) = default;
 
   Sphere( double X, double Y, double Z, char A ) :
-    x( X ),
-    y( Y ),
-    z( Z ),
-    atom( A )
+  x( X ),
+  y( Y ),
+  z( Z ),
+  atom( A )
   {}
 
   XYZ center() const{
-    return XYZ( x, y, z );
+  return XYZ( x, y, z );
   }
 
   double x = 0.0;
@@ -70,7 +70,7 @@ struct Sphere {
   char atom = 'X';
   //bool is_hydrogen = false;
 
-};
+  };
 */
 
 struct Sphere : public XYZ {
@@ -79,12 +79,20 @@ struct Sphere : public XYZ {
   constexpr Sphere( Sphere const & src ) = default;
   constexpr Sphere( Sphere && src ) = default;
 
-  constexpr Sphere( double X, double Y, double Z, char A ) :
-    XYZ( X, Y, Z ),
-    atom( A )
+  constexpr Sphere(
+    double X,
+    double Y,
+    double Z,
+    char A,
+    double rad = 1.0
+  ) :
+  XYZ( X, Y, Z ),
+    atom( A ),
+    radius( rad )
   {}
 
   char atom = 'X';
+  double radius = 1.0;
   //bool is_hydrogen = false;
 
 };
@@ -154,13 +162,13 @@ struct Pose {
 
       //asserts
       /*
-      XYZ const new_origin = calc_origin( x_span, y_span, z_span );
-      assert( abs( new_origin.x ) < 0.01 );
-      assert( abs( new_origin.y ) < 0.01 );
-      assert( abs( new_origin.z ) < 0.01 );
-      assert( x_span < 1.01 );
-      assert( y_span < 1.01 );
-      assert( z_span < 1.01 );
+	XYZ const new_origin = calc_origin( x_span, y_span, z_span );
+	assert( abs( new_origin.x ) < 0.01 );
+	assert( abs( new_origin.y ) < 0.01 );
+	assert( abs( new_origin.z ) < 0.01 );
+	assert( x_span < 1.01 );
+	assert( y_span < 1.01 );
+	assert( z_span < 1.01 );
       */
     }
 

@@ -1,5 +1,6 @@
 #include <representations/spheres.hh>
 #include <representations/sphere_math.hh>
+#include <render/render.hh>
 #include <assert.h>
 
 using namespace CLIProteinViewer;
@@ -66,21 +67,26 @@ void run_normalization_test3(){
 }
 
 void run_ray_cast_test1(){
-  constexpr Sphere s( 0.0, 0.0, 0.0, 'Y' );
-  //Pose p;
-  //p.chains[ "UNIT_TEST" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'Y' );
+  //constexpr double R = 1.0;
+  constexpr std::array< double, 5 > Rs({ 1.0, 2.0, 3.0, 4.0, 5.0 });
+  for( constexpr double R : Rs ){
+    constexpr Sphere s( 0.0, 0.0, 0.0, 'Y', R );
 
-  constexpr double dir_x =  0.0;
-  constexpr double dir_y =  0.0;
-  constexpr double dir_z =  1.0;
-  constexpr spheres::XYZ ray = { dir_x, dir_y, dir_z };
+    constexpr double dir_x =  0.0;
+    constexpr double dir_y =  0.0;
+    constexpr double dir_z =  1.0;
+    constexpr spheres::XYZ ray = { dir_x, dir_y, dir_z };
   
-  double t0 = -100;
-  bool const intersect = render::ray_intersect( ray, s, t0 );
+    double t0 = -100;
+    bool const intersect = render::ray_intersect( ray, s, t0 );
 
-  assert( intersect );
-  assert_close( t0, TODO );
+    assert( intersect );
+  
+    double const expected_distance = CLIProteinViewer::render::ABS_CAMERA_Z - s.radius;
+    assert_close( t0, expected_distance );
+  }
 }
+
 
 int main(){
   run_normalization_test1();
