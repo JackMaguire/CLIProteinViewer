@@ -117,20 +117,40 @@ draw_pose_on_screen(
   size_t const width = screen.width();
   size_t const height = screen.height();
 
-  constexpr double fov = M_PI / 1000;
-
   //https://github.com/ssloy/tinyraytracer/blob/master/tinyraytracer.cpp
+  /*
+    constexpr double fov = M_PI / 1000;
+    for( size_t w = 0; w < width; w++ ){
+    for( size_t h = 0; h < height; h++ ){
+    double const dir_x =  (w + 0.5) -  width/2.;
+    double const dir_y = -(h + 0.5) + height/2.;    // this flips the image at the same time
+    double const dir_z = -height/(2.*tan(fov/2.));
+    spheres::XYZ ray = { dir_x, dir_y, dir_z };
+    ray.normalize();
+
+    cast_ray( ray, pose, screen.pixel( h, w ), skip_hydrogens );
+    }
+    }
+  */
+
+  constexpr double dv = 0.01;
   for( size_t w = 0; w < width; w++ ){
     for( size_t h = 0; h < height; h++ ){
-      double const dir_x =  (w + 0.5) -  width/2.;
-      double const dir_y = -(h + 0.5) + height/2.;    // this flips the image at the same time
-      double const dir_z = -height/(2.*tan(fov/2.));
-      spheres::XYZ ray = { dir_x, dir_y, dir_z };
+      double const dw = (-1.0 * width/2.) + w;
+      double const dir_x = dw * dv;
+
+      double const dh = (-1.0 * height/2.) + h;
+      double const dir_y = dh * dv;
+
+      double const dir_z = 1.0;
+
+      spheres::XYZ ray({ dir_x, dir_y, dir_z });
       ray.normalize();
 
       cast_ray( ray, pose, screen.pixel( h, w ), skip_hydrogens );
     }
   }
+
 }
 
 }//namespace render
