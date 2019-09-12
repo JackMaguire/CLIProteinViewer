@@ -7,8 +7,8 @@
 
 #define LOGGER std::cout << __FUNCTION__ << " "
 
-#define START LOGGER << "begin" << std::endl
-#define END   LOGGER << "end" << std::endl
+#define START LOGGER << std::endl
+#define END   std::cout << std::endl
 
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::spheres;
@@ -96,7 +96,7 @@ void run_ray_cast_test1(){
   // double R = 1.0;
   std::array< double, 5 > Rs({ 1.0, 2.0, 3.0, 4.0, 5.0 });
   for( unsigned i = 0; i < Rs.size(); ++i ){
-    LOGGER << "i == " << i << std::endl;
+    //LOGGER << "i == " << i << std::endl;
     double R = Rs[ i ];
     Sphere s( 0.0, 0.0, 0.0, 'Y', R );
 
@@ -123,4 +123,6 @@ int main(){
   run_normalization_test3();
 
   run_ray_cast_test1();
+
+  std::cout << "All unit tests pass!" << std::endl;
 }
