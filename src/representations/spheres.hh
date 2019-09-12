@@ -162,6 +162,7 @@ struct Pose {
 	  s.x /= max_scale;
 	  s.y /= max_scale;
 	  s.z /= max_scale;
+	  s.radius /= max_scale;
 	}
       }
 
