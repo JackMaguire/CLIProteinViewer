@@ -67,15 +67,16 @@ void run_normalization_test3(){
 }
 
 void run_ray_cast_test1(){
-  //constexpr double R = 1.0;
-  constexpr std::array< double, 5 > Rs({ 1.0, 2.0, 3.0, 4.0, 5.0 });
-  for( constexpr double R : Rs ){
-    constexpr Sphere s( 0.0, 0.0, 0.0, 'Y', R );
+  // double R = 1.0;
+  std::array< double, 5 > Rs({ 1.0, 2.0, 3.0, 4.0, 5.0 });
+  for(  unsigned i = 0; i < Rs.size(); ++i ){
+    double R = Rs[ i ];
+    Sphere s( 0.0, 0.0, 0.0, 'Y', R );
 
-    constexpr double dir_x =  0.0;
-    constexpr double dir_y =  0.0;
-    constexpr double dir_z =  1.0;
-    constexpr spheres::XYZ ray = { dir_x, dir_y, dir_z };
+    double dir_x =  0.0;
+    double dir_y =  0.0;
+    double dir_z =  1.0;
+    spheres::XYZ ray = { dir_x, dir_y, dir_z };
   
     double t0 = -100;
     bool const intersect = render::ray_intersect( ray, s, t0 );
