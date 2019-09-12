@@ -13,11 +13,11 @@ namespace CLIProteinViewer {
 namespace spheres {
 
 struct XYZ {
-  XYZ() = default;
-  XYZ( XYZ const & src ) = default;
-  XYZ( XYZ & src ) = default;
+  constexpr XYZ() = default;
+  constexpr XYZ( XYZ const & src ) = default;
+  constexpr XYZ( XYZ & src ) = default;
 
-  XYZ( double X, double Y, double Z ) :
+  constexpr XYZ( double X, double Y, double Z ) :
     x( X ),
     y( Y ),
     z( Z )
@@ -27,14 +27,14 @@ struct XYZ {
   double y = 0.0;
   double z = 0.0;
 
-  void normalize() {
+  constexpr void normalize() {
     double const l = sqrt( x*x + y*y + z*z );
     x /= l;
     y /= l;
     z /= l;
   }
 
-  double & operator[]( size_t const i ){
+  constexpr double & operator[]( size_t const i ){
     switch( i ){
     case 0: return x;
     case 1: return y;
