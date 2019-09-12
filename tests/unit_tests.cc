@@ -3,12 +3,26 @@
 #include <render/render.hh>
 #include <assert.h>
 
+#include <iostream>
+
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::spheres;
 
+//yeah yeah yeah I know this can be done with a macro
 template< typename T >
-void assert_close( T const t1, T const t2 ){
-  assert( abs( t1 - t2 ) > 0.001 );
+void assert_equals( T const t1, T const t2, int const line_num ){
+  if( t1 != t2 ){
+    std::cerr << t1 << " != " << t2 << " on line " << line_num << std::endl;
+    assert( false );
+  }
+}
+
+template< typename T >
+void assert_close( T const t1, T const t2, int const line_num ){
+  if( abs( t1 - t2 ) > 0.001 ){
+    std::cerr << t1 << " != " << t2 << " on line " << line_num << std::endl;
+    assert( false );
+  }
 }
 
 void run_normalization_test1(){
@@ -17,16 +31,16 @@ void run_normalization_test1(){
 
   //Test origin
   XYZ const origin = p.calc_origin();
-  assert( origin.x == 0.0 );
-  assert( origin.y == 0.0 );
-  assert( origin.z == 0.0 );
+  assert_equals( origin.x, 0.0, __LINE__ );
+  assert_equals( origin.y, 0.0, __LINE__ );
+  assert_equals( origin.z, 0.0, __LINE__ );
 
   //Test origin after normalization
   p.normalize_pose();
   XYZ const origin2 = p.calc_origin();
-  assert( origin2.x == 0.0 );
-  assert( origin2.y == 0.0 );
-  assert( origin2.z == 0.0 );
+  assert_equals( origin2.x, 0.0, __LINE__ );
+  assert_equals( origin2.y, 0.0, __LINE__ );
+  assert_equals( origin2.z, 0.0, __LINE__ );
 }
 
 void run_normalization_test2(){
@@ -35,16 +49,16 @@ void run_normalization_test2(){
 
   //Test origin
   XYZ const origin = p.calc_origin();
-  assert( origin.x == 1.0 );
-  assert( origin.y == 2.0 );
-  assert( origin.z == 3.0 );
+  assert_equals( origin.x, 0.0, __LINE__ );
+  assert_equals( origin.y, 0.0, __LINE__ );
+  assert_equals( origin.z, 0.0, __LINE__ );
 
   //Test origin after normalization
   p.normalize_pose();
   XYZ const origin2 = p.calc_origin();
-  assert( origin2.x == 0.0 );
-  assert( origin2.y == 0.0 );
-  assert( origin2.z == 0.0 );
+  assert_equals( origin2.x, 0.0, __LINE__ );
+  assert_equals( origin2.y, 0.0, __LINE__ );
+  assert_equals( origin2.z, 0.0, __LINE__ );
 }
 
 void run_normalization_test3(){
@@ -54,16 +68,17 @@ void run_normalization_test3(){
 
   //Test origin
   XYZ const origin = p.calc_origin();
-  assert( origin.x == 2.0 );
-  assert( origin.y == 2.0 );
-  assert( origin.z == 3.0 );
+  assert_equals( origin.x, 0.0, __LINE__ );
+  assert_equals( origin.y, 0.0, __LINE__ );
+  assert_equals( origin.z, 0.0, __LINE__ );
 
   //Test origin after normalization
   p.normalize_pose();
   XYZ const origin2 = p.calc_origin();
-  assert( origin2.x == 0.0 );
-  assert( origin2.y == 0.0 );
-  assert( origin2.z == 0.0 );
+  assert_equals( origin2.x, 0.0, __LINE__ );
+  assert_equals( origin2.y, 0.0, __LINE__ );
+  assert_equals( origin2.z, 0.0, __LINE__ );
+
 }
 
 void run_ray_cast_test1(){
@@ -84,7 +99,7 @@ void run_ray_cast_test1(){
     assert( intersect );
   
     double const expected_distance = CLIProteinViewer::render::ABS_CAMERA_Z - s.radius;
-    assert_close( t0, expected_distance );
+    assert_close( t0, expected_distance, __LINE__ );
   }
 }
 
