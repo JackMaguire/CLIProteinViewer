@@ -70,12 +70,6 @@ void run_ray_cast_test1(){
   //Pose p;
   //p.chains[ "UNIT_TEST" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'Y' );
 
-  //Test origin
-  XYZ const origin = p.calc_origin();
-  assert( origin.x == 0.0 );
-  assert( origin.y == 0.0 );
-  assert( origin.z == 0.0 );
-
   constexpr double dir_x =  0.0;
   constexpr double dir_y =  0.0;
   constexpr double dir_z =  1.0;
