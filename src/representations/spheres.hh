@@ -126,13 +126,18 @@ struct Pose {
   void
   normalize_pose(
     bool const position = true,
-    bool const scale = true
+    bool scale = true
   ) {
     double x_span = -1.0;
     double y_span = -1.0;
     double z_span = -1.0;
+
     XYZ const origin = calc_origin( x_span, y_span, z_span );
     double const max_scale = std::max( x_span, std::max( y_span, z_span ) );
+
+    if( max_scale == 0.0 ){
+      scale = false;
+    }
 
     for( auto & pair : chains ){
       for( Sphere & s : pair.second.hydrogen_atoms ){
