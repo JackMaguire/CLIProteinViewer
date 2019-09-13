@@ -45,33 +45,29 @@ struct XYZ {
 
 };
 
-/*
-  struct Sphere {
+struct RotationMatrix {
+  enum AXIS {
+    X,
+    Y,
+    X
+  };
 
-  Sphere() = default;
-  Sphere( Sphere const & src ) = default;
-  Sphere( Sphere && src ) = default;
-
-  Sphere( double X, double Y, double Z, char A ) :
-  x( X ),
-  y( Y ),
-  z( Z ),
-  atom( A )
-  {}
-
-  XYZ center() const{
-  return XYZ( x, y, z );
+  RotationMatrix( AXIS axis, double value ){
+    TODO
   }
 
-  double x = 0.0;
-  double y = 0.0;
-  double z = 0.0;
+  double xx;
+  double xy;
+  double xz;
 
-  char atom = 'X';
-  //bool is_hydrogen = false;
+  double xx;
+  double xy;
+  double xz;
 
-  };
-*/
+  double xx;
+  double xy;
+  double xz;
+}
 
 struct Sphere : public XYZ {
 
@@ -182,14 +178,30 @@ struct Pose {
 
   Pose
   create_transformed_pose(
-    double theta_radians,
-    double phi_radians,
-    double psi_radians
+    double x_rotation_radian,
+    double y_rotation_radian,
+    double z_rotation_radian
   ) {
     //TODO
     //https://math.stackexchange.com/questions/1741282/3d-calculate-new-location-of-point-after-rotation-around-origin
     //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
     Pose p( *this );
+
+    auto && operate = [=]( Sphere & s ){
+      //x rotation:
+      
+    };
+
+    for( auto & string_chain_pair : p.chains ){
+      auto chain = string_chain_pair.second;
+      for( Sphere & s : chain.heavy_atoms ){
+	operate( s );
+      }
+      for( Sphere & s : chain.hydrogen_atoms ){
+	operate( s );
+      }
+    }
+
     return p;
   }
 
