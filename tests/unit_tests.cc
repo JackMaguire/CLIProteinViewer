@@ -119,7 +119,8 @@ void run_ray_cast_test1(){
   END;
 }
 
-void pdb_load_test1_inner_call1( Pose const & pose ){
+void run_pdb_load_test1(){
+  START;
   /*
     $ awk '{print $NF}' test.pdb | sort | uniq -c
     15 C
@@ -163,6 +164,9 @@ void pdb_load_test1_inner_call1( Pose const & pose ){
   static_assert( num_expected_heavy == num_expected_heavy_chain1 + num_expected_heavy_chain2, "Unit test was set up incorrectly" );
   static_assert( num_expected_hydrogen == num_expected_hydrogen_chain1 + num_expected_hydrogen_chain2, "Unit test was set up incorrectly" );
 
+  //Hard-coded to assume this is run from the main directory
+  Pose const pose( "tests/test.pdb" );
+
   T_EQUALS( pose.chains.size(), 2 );
 
   for( auto const & string_chain_pair : pose.chains ){
@@ -170,23 +174,44 @@ void pdb_load_test1_inner_call1( Pose const & pose ){
     if( chain.chain == 'A' ){
       T_EQUALS( chain.heavy_atoms.size(), num_expected_heavy_chain1 );
       T_EQUALS( chain.hydrogen_atoms.size(), num_expected_hydrogen_chain1 );
+
+      //first heavy: ATOM      1  N   ARG A  32      11.324  56.872  31.990  1.00  0.00           N 
+      Sphere const & first_heavy = chain.heavy_atoms[ 0 ];
+      T_CLOSE( first_heavy.x, 11.324 );
+      T_CLOSE( first_heavy.y, 56.872 );
+      T_CLOSE( first_heavy.z, 31.990 );
+      T_EQUALS( first_heavy.atom, 'N' );
+
+      //first hydrogen: ATOM     12 1H   ARG A  32      11.477  57.723  32.492  1.00  0.00           H 
+      Sphere const & first_hydrogen = chain.hydrogen_atoms[ 0 ];
+      T_CLOSE( first_hydrogen.x, 11.477 );
+      T_CLOSE( first_hydrogen.y, 57.723 );
+      T_CLOSE( first_hydrogen.z, 32.492 );
+      T_EQUALS( first_hydrogen.atom, 'H' );
+
     } else if ( chain.chain == 'B' ){
       T_EQUALS( chain.heavy_atoms.size(), num_expected_heavy_chain2 );
       T_EQUALS( chain.hydrogen_atoms.size(), num_expected_hydrogen_chain2 );
+      //first heavy: ATOM   5004  N   ASN B   3      28.527  21.670  11.548  1.00  0.00           N
+      Sphere const & first_heavy = chain.heavy_atoms[ 0 ];
+      T_CLOSE( first_heavy.x, 28.527 );
+      T_CLOSE( first_heavy.y, 21.670 );
+      T_CLOSE( first_heavy.z, 11.548 );
+      T_EQUALS( first_heavy.atom, 'N' );
+
+      //first hydrogen: ATOM   5012 1H   ASN B   3      28.171  21.842  10.629  1.00  0.00           H 
+      Sphere const & first_hydrogen = chain.hydrogen_atoms[ 0 ];
+      T_CLOSE( first_hydrogen.x, 28.171 );
+      T_CLOSE( first_hydrogen.y, 21.842 );
+      T_CLOSE( first_hydrogen.z, 10.629 );
+      T_EQUALS( first_hydrogen.atom, 'H' );
+
     } else {
       std::cerr << "Unknown chain " << chain.chain << " found!" << std::endl;
       assert( false );
     }
   }
-}
 
-void run_pdb_load_test1(){
-  START;
-  //Hard-coded to assume this is run from the main directory
-  Pose pose( "tests/test.pdb" );
-  pdb_load_test1_inner_call1( pose );
-
-  //Make sure that the pose behaves correctly after being loaded:
   END;
 }
 
