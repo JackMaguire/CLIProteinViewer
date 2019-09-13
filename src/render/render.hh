@@ -8,6 +8,8 @@
 #include <representations/spheres.hh>
 #include <representations/sphere_math.hh>
 
+#include <settings.hh>
+
 #include <iostream>
 
 namespace CLIProteinViewer {
@@ -140,7 +142,7 @@ draw_pose_on_screen(
       double const dir_x = dw * dv;
 
       double const dh = (-1.0 * height/2.) + h;
-      double const dir_y = dh * dv;
+      double const dir_y = dh * dv * h_to_v_ratio;
 
       double const dir_z = 1.0;
 
