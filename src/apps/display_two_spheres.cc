@@ -29,6 +29,7 @@ int main( int argc, char **argv ){
   Pose pose;
   pose.chains[ "A" ].heavy_atoms.emplace_back(  0.5, 0.0, 0.0, 'X', 1.0 );
   pose.chains[ "B" ].heavy_atoms.emplace_back( -0.5, 0.0, 0.0, 'X', 1.0 );
+  pose.normalize_pose( true, true );
 
   render::draw_pose_on_screen( pose, screen );
 
@@ -84,6 +85,16 @@ int main( int argc, char **argv ){
 	break;
       case Key::RIGHT:
 	x_rotation -= 0.1;
+	repaint = true;
+	break;
+
+	// ZOOMING:
+      case Key::W:
+	settings::zoom *= 1.05;
+	repaint = true;
+	break;
+      case Key::S:
+	settings::zoom *= 0.95;
 	repaint = true;
 	break;
       }
