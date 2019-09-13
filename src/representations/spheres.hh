@@ -56,6 +56,14 @@ struct RotationMatrix {
     TODO
   }
 
+  XYZ apply( XYZ const & original ){
+    XYZ result;
+    result.x = xx * original.x + xy * original.y + xz * original.z;
+    result.y = yx * original.x + yy * original.y + yz * original.z;
+    result.z = zx * original.x + zy * original.y + zz * original.z;
+    return result;
+  }
+
   double xx;
   double xy;
   double xz;
