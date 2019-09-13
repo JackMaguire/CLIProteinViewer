@@ -151,18 +151,5 @@ void print_nearest_color( visualize::Pixel const & p ){
   print_nearest_color( p.r, p.g, p.b );
 }
 
-/*
-  int main() {
-  //char special_char = '◼︎';
-  textcolor(BRIGHT, RED, BLACK);
-  std::cout << "X";
-  textcolor(BRIGHT, GREEN, BLACK);
-  std::cout << "X";
-  textcolor(RESET, WHITE, BLACK);
-  std::cout << std::endl;
-  return 0;
-  }
-*/
-
 }//color
 }//CLIPV

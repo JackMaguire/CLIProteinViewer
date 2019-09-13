@@ -32,12 +32,12 @@ determine_color(
 
   switch( chain_id ){
   case( -1 ): break;
-  case( 0 ): pixel.r = 255; break;
-  case( 1 ): pixel.g = 255; break;
-  case( 2 ): pixel.b = 255; break;
-  case( 3 ): pixel.r = 255; pixel.g = 255; break;
-  case( 4 ): pixel.g = 255; pixel.b = 255; break;
-  default:   pixel.b = 255; pixel.r = 255; break;
+  case( 0 ): pixel.g = 255; break; //green
+  case( 1 ): pixel.g = 255; pixel.b = 255; break; //cyan
+  case( 2 ): pixel.r = 255; pixel.b = 255; break; //magenta
+  case( 3 ): pixel.r = 255; pixel.g = 255; break; //yellow
+  case( 4 ): pixel.b = 255; break;
+  default:   pixel.r = 255; break;
   }
 
   //TODO multiply by t0 - ABS_CAMERA_Z?
