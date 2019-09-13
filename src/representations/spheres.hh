@@ -46,14 +46,27 @@ struct XYZ {
 };
 
 struct RotationMatrix {
-  enum AXIS {
+  enum class AXIS {
     X,
     Y,
-    X
+    Z
   };
 
+  //value needs to be in radians
   RotationMatrix( AXIS axis, double value ){
-    TODO
+    xx = xy = xz = yx = yy = yz = zx = zy = zz = 0.0;
+    switch( axis ){
+    case( X ):
+      xx = 1.0;
+      yy = zz = cos( value );
+      zy = sin( value );
+      yz = -1.0 * zy;
+      break;
+    case( Y ):
+      break;
+    case( Z ):
+      break;
+    }
   }
 
   XYZ apply( XYZ const & original ){
@@ -64,17 +77,17 @@ struct RotationMatrix {
     return result;
   }
 
-  double xx;
-  double xy;
-  double xz;
+  double xx = 0.0;
+  double xy = 0.0;
+  double xz = 0.0;
 
-  double xx;
-  double xy;
-  double xz;
+  double yx = 0.0;
+  double yy = 0.0;
+  double yz = 0.0;
 
-  double xx;
-  double xy;
-  double xz;
+  double zx = 0.0;
+  double zy = 0.0;
+  double zz = 0.0;
 }
 
 struct Sphere : public XYZ {
@@ -195,9 +208,11 @@ struct Pose {
     //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
     Pose p( *this );
 
-    auto && operate = [=]( Sphere & s ){
+    RotationMatrix x_rot( RotationMatrix::AXIS::X, x_rotation_radian );
+
+    auto && operate = [&]( Sphere & s ){
       //x rotation:
-      
+      x_rot.apply( s );
     };
 
     for( auto & string_chain_pair : p.chains ){
