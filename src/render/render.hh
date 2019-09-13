@@ -69,7 +69,7 @@ cast_ray(
   visualize::Pixel & pixel,
   bool skip_hydrogens = true
 ) {
-  std::cout << ray_direction.x << " " << ray_direction.y << " " << ray_direction.z << std::endl;
+  //std::cout << ray_direction.x << " " << ray_direction.y << " " << ray_direction.z << std::endl;
 
   //Sphere * closest_atom = nullptr;
   int chain_id_for_closest_atom = -1;
@@ -105,7 +105,14 @@ cast_ray(
   //std::cout << "Hit a guy at " << hit_position.x << "," << hit_position.y << "," << hit_position.z << std::endl;
 
   //std::cout << "HIT " << chain_id << std::endl;
-  determine_color( chain_id_for_closest_atom, t0, pixel );
+  if( chain_id_for_closest_atom == -1 ){
+    //no hit
+    pixel.r = 0;
+    pixel.g = 0;
+    pixel.b = 0;
+  } else {
+    determine_color( chain_id_for_closest_atom, t0, pixel );
+  }
 }
 
 void

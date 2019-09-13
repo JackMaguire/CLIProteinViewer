@@ -140,7 +140,8 @@ void print_nearest_color( int r, int g, int b ){
   }
 
   //printf( std::to_string(code).c_str() );
-  printf( "X" );
+  if( r + g + b == 0 ) printf( " " );
+  else printf( "X" );
 
   //reset
   textcolor( MagicNumbers::RESET, MagicNumbers::WHITE, MagicNumbers::BLACK );
