@@ -3,7 +3,8 @@
 namespace CLIProteinViewer {
 namespace settings {
 
-constexpr double h_to_v_ratio = 0.7;
+constexpr double zoom = 0.0022;
+constexpr double h_to_v_ratio = 1.8;
 
 }
 }
