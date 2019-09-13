@@ -60,7 +60,7 @@ struct RotationMatrix {
       xx = 1.0;
       yy = zz = cos( value );
       zy = sin( value );
-      yz = -1.0 * zy;
+      yz = -1.0 * zy;//zy and yz might be switched
       break;
     case( Y ):
       break;
