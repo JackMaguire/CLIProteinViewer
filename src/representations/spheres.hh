@@ -189,7 +189,7 @@ struct Pose {
     //TODO
     //https://math.stackexchange.com/questions/1741282/3d-calculate-new-location-of-point-after-rotation-around-origin
     //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
-    Pose p;
+    Pose p( *this );
     return p;
   }
 
