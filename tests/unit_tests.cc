@@ -10,6 +10,9 @@
 #define START LOGGER << std::endl
 #define END   std::cout << std::endl
 
+#define T_EQUALS( a, b ) assert_equals< decltype( a ) >( a, b, __LINE__ )
+#define T_CLOSE( a, b ) assert_close< decltype( a ) >( a, b, __LINE__ )
+
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::spheres;
 
@@ -116,6 +119,76 @@ void run_ray_cast_test1(){
   END;
 }
 
+void pdb_load_test1_inner_call1( Pose const & pose ){
+  /*
+    $ awk '{print $NF}' test.pdb | sort | uniq -c
+    15 C
+    29 H
+    7 N
+    6 O
+    2 TER
+
+    15 + 7 + 6 = 28
+   */
+
+  constexpr unsigned num_expected_heavy    = 28;
+  constexpr unsigned num_expected_hydrogen = 29;
+
+  /*
+    $ grep ' A ' test.pdb | awk '{print $NF}' | sort | uniq -c
+    11 C
+    21 H
+    5 N
+    4 O
+
+    11 + 5 + 4 = 20
+  */
+
+  constexpr unsigned num_expected_heavy_chain1    = 20;
+  constexpr unsigned num_expected_hydrogen_chain1 = 21;
+
+  /*
+    $ grep ' B ' test.pdb | awk '{print $NF}' | sort | uniq -c
+      4 C
+      8 H
+      2 N
+      2 O
+
+      4 + 2 + 2 = 8
+  */
+
+  constexpr unsigned num_expected_heavy_chain2    = 8;
+  constexpr unsigned num_expected_hydrogen_chain2 = 8;
+
+  static_assert( num_expected_heavy == num_expected_heavy_chain1 + num_expected_heavy_chain2, "Unit test was set up incorrectly" );
+  static_assert( num_expected_hydrogen == num_expected_hydrogen_chain1 + num_expected_hydrogen_chain2, "Unit test was set up incorrectly" );
+
+  T_EQUALS( pose.chains.size(), 2 );
+
+  for( auto const & string_chain_pair : pose.chains ){
+    Chain const & chain = string_chain_pair.second;
+    if( chain.chain == 'A' ){
+      T_EQUALS( chain.heavy_atoms.size(), num_expected_heavy_chain1 );
+      T_EQUALS( chain.hydrogen_atoms.size(), num_expected_hydrogen_chain1 );
+    } else if ( chain.chain == 'B' ){
+      T_EQUALS( chain.heavy_atoms.size(), num_expected_heavy_chain2 );
+      T_EQUALS( chain.hydrogen_atoms.size(), num_expected_hydrogen_chain2 );
+    } else {
+      std::cerr << "Unknown chain " << chain.chain << " found!" << std::endl;
+      assert( false );
+    }
+  }
+}
+
+void run_pdb_load_test1(){
+  START;
+  //Hard-coded to assume this is run from the main directory
+  Pose pose( "tests/test.pdb" );
+  pdb_load_test1_inner_call1( pose );
+
+  //Make sure that the pose behaves correctly after being loaded:
+  END;
+}
 
 int main(){
   run_normalization_test1();
@@ -123,6 +196,8 @@ int main(){
   run_normalization_test3();
 
   run_ray_cast_test1();
+
+  run_pdb_load_test1();
 
   std::cout << "All unit tests pass!" << std::endl;
 }
