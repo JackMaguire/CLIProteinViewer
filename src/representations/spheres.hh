@@ -46,10 +46,10 @@ struct XYZ {
 };
 
 struct RotationMatrix {
-  enum AXIS {
+  enum class AXIS {
     X,
     Y,
-    X
+    Z
   };
 
   RotationMatrix( AXIS axis, double value ){
