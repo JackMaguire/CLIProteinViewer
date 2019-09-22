@@ -215,6 +215,28 @@ void run_pdb_load_test1(){
   END;
 }
 
+void run_rotation_test1(){
+  START;
+  Pose p;
+  p.chains[ "UNIT_TEST"  ].heavy_atoms.emplace_back( 1.0, 2.0, 3.0, 'Y' );
+  //p.chains[ "UNIT_TEST2" ].heavy_atoms.emplace_back( 3.0, 2.0, 3.0, 'Z' );
+
+  //Test origin
+  XYZ const origin = p.calc_origin();
+  assert_equals( origin.x, 1.0, __LINE__ );
+  assert_equals( origin.y, 2.0, __LINE__ );
+  assert_equals( origin.z, 3.0, __LINE__ );
+
+  //Test origin after null rotation
+  Pose p2 = p.create_transformed_pose( 0, 0, 0 );
+  XYZ const origin2 = p2.calc_origin();
+  assert_close( origin2.x, 1.0, __LINE__ );
+  assert_close( origin2.y, 2.0, __LINE__ );
+  assert_close( origin2.z, 3.0, __LINE__ );
+  END;
+}
+
+
 int main(){
   run_normalization_test1();
   run_normalization_test2();
@@ -223,6 +245,8 @@ int main(){
   run_ray_cast_test1();
 
   run_pdb_load_test1();
+
+  run_rotation_test1();
 
   std::cout << "All unit tests pass!" << std::endl;
 }
