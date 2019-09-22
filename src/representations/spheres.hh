@@ -53,7 +53,7 @@ struct RotationMatrix {
   };
 
   RotationMatrix( AXIS axis, double value ){
-    TODO
+    //TODO
   }
 
   XYZ apply( XYZ const & original ){
@@ -68,13 +68,13 @@ struct RotationMatrix {
   double xy;
   double xz;
 
-  double xx;
-  double xy;
-  double xz;
+  double yx;
+  double yy;
+  double yz;
 
-  double xx;
-  double xy;
-  double xz;
+  double zx;
+  double zy;
+  double zz;
 }
 
 struct Sphere : public XYZ {
