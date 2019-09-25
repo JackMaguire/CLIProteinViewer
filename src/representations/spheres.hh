@@ -46,38 +46,6 @@ struct XYZ {
 
 };
 
-struct RotationMatrix {
-  enum class AXIS {
-    X,
-    Y,
-    Z
-  };
-
-  RotationMatrix( AXIS axis, double value ){
-    //TODO
-  }
-
-  XYZ apply( XYZ const & original ){
-    XYZ result;
-    result.x = xx * original.x + xy * original.y + xz * original.z;
-    result.y = yx * original.x + yy * original.y + yz * original.z;
-    result.z = zx * original.x + zy * original.y + zz * original.z;
-    return result;
-  }
-
-  double xx;
-  double xy;
-  double xz;
-
-  double yx;
-  double yy;
-  double yz;
-
-  double zx;
-  double zy;
-  double zz;
-};
-
 struct Sphere : public XYZ {
 
   constexpr Sphere() = default;
@@ -99,6 +67,7 @@ struct Sphere : public XYZ {
   {}
 
   char atom = 'X';
+  char atom_name[ 2 ];
   double radius = 1.0;
   //bool is_hydrogen = false;
 

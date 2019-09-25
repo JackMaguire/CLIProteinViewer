@@ -1,3 +1,6 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include <iostream>
 #include <vector>
 
@@ -25,14 +28,19 @@ using namespace CLIProteinViewer::keylistener;
 
 int main( int argc, char **argv ){
 
+  std::vector< std::string > args( argv, argv + argc );
+
+  if( args.size() != 2 ){
+    std::cerr << "Please pass exactly one pdb file" << std::endl;
+    return -1;
+  }
+
   CLIProteinViewer::fit_display_parameters();
 
   Screen screen;
   std::cout << screen.height() << " x " << screen.width() << std::endl;
 
-  Pose pose;
-  pose.chains[ "A" ].heavy_atoms.emplace_back(  0.5, 0.0, 0.0, 'X', 1.0 );
-  pose.chains[ "B" ].heavy_atoms.emplace_back( -0.5, 0.0, 0.0, 'X', 1.0 );
+  Pose pose( args[1] );
   pose.normalize_pose( true, true );
 
   render::draw_pose_on_screen( pose, screen );
@@ -40,6 +48,9 @@ int main( int argc, char **argv ){
   double x_rotation = 0.0;
   double y_rotation = 0.0;
   double z_rotation = 0.0;
+
+  double d_rot = M_PI / 4.0;
+  render::DisplayMode display_mode = render::DisplayMode::BB;
 
   printf("\n");
   for( int h = 0; h < screen.height(); ++h ){
@@ -75,32 +86,34 @@ int main( int argc, char **argv ){
       read( fileno( stdin ), &c, 1 );
       int const command = int( c );
       switch( parse_int( command ) ){
+
+	//Rotate:
       case Key::UP:
-	z_rotation += 0.1;
+	z_rotation += d_rot;
 	repaint = true;
 	break;
       case Key::DOWN:
-	z_rotation -= 0.1;
+	z_rotation -= d_rot;
 	repaint = true;
 	break;
       case Key::LEFT:
-	y_rotation += 0.1;
+	y_rotation += d_rot;
 	repaint = true;
 	break;
       case Key::RIGHT:
-	y_rotation -= 0.1;
+	y_rotation -= d_rot;
 	repaint = true;
 	break;
       case Key::A:
-	x_rotation += 0.1;
+	x_rotation += d_rot;
 	repaint = true;
 	break;
       case Key::D:
-	x_rotation -= 0.1;
+	x_rotation -= d_rot;
 	repaint = true;
 	break;
 
-	// ZOOMING:
+	// Zooming:
       case Key::S:
 	settings::ZOOM *= 1.05;
 	repaint = true;
@@ -109,6 +122,51 @@ int main( int argc, char **argv ){
 	settings::ZOOM *= 0.95;
 	repaint = true;
 	break;
+
+	//Step Size:
+      case Key::ONE:
+	d_rot = M_PI / 16.0;
+	repaint = false;
+	break;
+      case Key::TWO:
+	d_rot = M_PI / 8.0;
+	repaint = false;
+	break;
+      case Key::THREE:
+	d_rot = M_PI / 4.0;
+	repaint = false;
+	break;
+      case Key::FOUR:
+	d_rot = M_PI / 2.0;
+	repaint = false;
+	break;
+
+	//View Mode:
+      case Key::ZERO:
+	if( display_mode != render::DisplayMode::ALLATOM ){
+	  display_mode = render::DisplayMode::ALLATOM;
+	  repaint = true;
+	}
+	break;
+      case Key::NINE:
+	if( display_mode != render::DisplayMode::HEAVY ){
+	  display_mode = render::DisplayMode::HEAVY;
+	  repaint = true;
+	}
+	break;
+      case Key::EIGHT:
+	if( display_mode != render::DisplayMode::BB_HEAVY ){
+	  display_mode = render::DisplayMode::BB_HEAVY;
+	  repaint = true;
+	}
+	break;
+      case Key::SEVEN:
+	if( display_mode != render::DisplayMode::BB_N ){
+	  display_mode = render::DisplayMode::BB_N;
+	  repaint = true;
+	}
+	break;
+
       }
     }
     else if( res < 0 ){

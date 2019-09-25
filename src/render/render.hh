@@ -15,6 +15,13 @@
 namespace CLIProteinViewer {
 namespace render {
 
+enum class DisplayMode {
+  ALLATOM,
+  HEAVY,
+  BB,
+  N
+};
+
 constexpr double CAMERA_Z = -10.0;
 constexpr double ABS_CAMERA_Z = 10.0;
 
@@ -67,7 +74,7 @@ cast_ray(
   spheres::Pose const & pose,
   //visualize::Screen & screen,
   visualize::Pixel & pixel,
-  bool skip_hydrogens = true
+  DisplayMode const display_mode
 ) {
   //std::cout << ray_direction.x << " " << ray_direction.y << " " << ray_direction.z << std::endl;
 
@@ -79,6 +86,8 @@ cast_ray(
   double t0 = 0;
   for( auto const & pair : pose.chains ){
     for( spheres::Sphere const & s : pair.second.heavy_atoms ){
+      if( ! sphere_is_eligible( s, display_mode ) ) continue;
+
       if( ray_intersect( ray_direction, s, t0 ) ){
 	if( t0 < closest_distance || chain_id_for_closest_atom == -1 ){
 	  //closest_atom = &s;
@@ -87,7 +96,7 @@ cast_ray(
 	}
       }
     }
-    if( ! skip_hydrogens ){
+    if( display_mode == DisplayMode::ALLATOM ){
       for( spheres::Sphere const & s : pair.second.hydrogen_atoms ){
 	if( ray_intersect( ray_direction, s, t0 ) ){
 	  if( t0 < closest_distance || chain_id_for_closest_atom == -1 ){
@@ -119,28 +128,10 @@ void
 draw_pose_on_screen(
   spheres::Pose const & pose,
   visualize::Screen & screen,
-  bool skip_hydrogens = true
+  DisplayMode const display_mode  
 ) {
-  //spheres::XYZ const camera_position = { 0.0, 0.0, CAMERA_Z };
-
   size_t const width = screen.width();
   size_t const height = screen.height();
-
-  //https://github.com/ssloy/tinyraytracer/blob/master/tinyraytracer.cpp
-  /*
-    constexpr double fov = M_PI / 1000;
-    for( size_t w = 0; w < width; w++ ){
-    for( size_t h = 0; h < height; h++ ){
-    double const dir_x =  (w + 0.5) -  width/2.;
-    double const dir_y = -(h + 0.5) + height/2.;    // this flips the image at the same time
-    double const dir_z = -height/(2.*tan(fov/2.));
-    spheres::XYZ ray = { dir_x, dir_y, dir_z };
-    ray.normalize();
-
-    cast_ray( ray, pose, screen.pixel( h, w ), skip_hydrogens );
-    }
-    }
-  */
 
   for( size_t w = 0; w < width; w++ ){
     for( size_t h = 0; h < height; h++ ){
@@ -155,7 +146,7 @@ draw_pose_on_screen(
       spheres::XYZ ray({ dir_x, dir_y, dir_z });
       ray.normalize();
 
-      cast_ray( ray, pose, screen.pixel( h, w ), skip_hydrogens );
+      cast_ray( ray, pose, screen.pixel( h, w ), display_mode );
     }
   }
 
