@@ -51,6 +51,9 @@ int main( int argc, char **argv ){
   double d_rot = M_PI / 4.0;
   render::DisplayMode display_mode = render::DisplayMode::BB_HEAVY;
 
+  double zoomin_factor = 0.97;
+  double zoomout_factor = 1.05;
+
   render::draw_pose_on_screen( pose, screen, display_mode );
 
   printf("\n");
@@ -116,29 +119,37 @@ int main( int argc, char **argv ){
 
 	// Zooming:
       case Key::S:
-	settings::ZOOM *= 1.05;
+	settings::ZOOM *= zoomout_factor;
 	repaint = true;
 	break;
       case Key::W:
-	settings::ZOOM *= 0.95;
+	settings::ZOOM *= zoomin_factor;
 	repaint = true;
 	break;
 
 	//Step Size:
       case Key::ONE:
 	d_rot = M_PI / 16.0;
+	zoomin_factor = 0.97;
+	zoomout_factor = 1.05;
 	repaint = false;
 	break;
       case Key::TWO:
 	d_rot = M_PI / 8.0;
+	zoomin_factor = 0.93;
+	zoomout_factor = 1.10;
 	repaint = false;
 	break;
       case Key::THREE:
 	d_rot = M_PI / 4.0;
+	zoomin_factor = 0.8;
+	zoomout_factor = 1.5;
 	repaint = false;
 	break;
       case Key::FOUR:
 	d_rot = M_PI / 2.0;
+	zoomin_factor = 0.5;
+	zoomout_factor = 2.0;
 	repaint = false;
 	break;
 

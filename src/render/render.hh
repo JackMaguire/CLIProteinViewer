@@ -92,18 +92,18 @@ bool ray_intersect(
   double const r2 = sphere.radius * sphere.radius;
   if( d2 > r2 ) return false;
   double const thc = sqrtf( r2 - d2);
-  t0       = tca - thc;
-  double const t1 = tca + thc;
-  if (t0 < 0) t0 = t1;
-  if (t0 < 0) return false;
-  return true;
+  t0 = tca - thc;
+  if( t0 < 0 ){
+    double const t1 = tca + thc;
+    t0 = t1;
+  }
+  return t0 >= 0;
 }
 
 void
 cast_ray(
   spheres::XYZ const & ray_direction,
   spheres::Pose const & pose,
-  //visualize::Screen & screen,
   visualize::Pixel & pixel,
   DisplayMode const display_mode
 ) {
