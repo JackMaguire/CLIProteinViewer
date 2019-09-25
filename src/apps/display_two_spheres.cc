@@ -72,11 +72,11 @@ int main( int argc, char **argv ){
       int const command = int( c );
       switch( parse_int( command ) ){
       case Key::UP:
-	y_rotation += 0.1;
+	z_rotation += 0.1;
 	repaint = true;
 	break;
       case Key::DOWN:
-	y_rotation -= 0.1;
+	z_rotation -= 0.1;
 	repaint = true;
 	break;
       case Key::LEFT:

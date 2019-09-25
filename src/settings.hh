@@ -7,7 +7,7 @@ namespace settings {
 
 static double ZOOM = 0.0072;
 
-static double h_to_v_ratio = 0.55;
+static double h_to_v_ratio = 0.55 / 1.2;
 
 }
 }
