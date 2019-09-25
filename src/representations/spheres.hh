@@ -59,15 +59,31 @@ struct Sphere : public XYZ {
     double Y,
     double Z,
     char A,
+    std::array< char, 2 > A_name,
     double rad = 1.0
   ) :
   XYZ( X, Y, Z ),
     atom( A ),
+    atom_name( A_name ),
+    radius( rad )
+  {}
+
+  Sphere(
+    double X,
+    double Y,
+    double Z,
+    char A,
+    std::string const & A_name, //must be size 2
+    double rad = 1.0
+  ) :
+  XYZ( X, Y, Z ),
+    atom( A ),
+    atom_name({ A_name[ 0 ], A_name[ 1 ] }),
     radius( rad )
   {}
 
   char atom = 'X';
-  char atom_name[ 2 ];
+  std::array< char, 2 > atom_name = {{ ' ', ' ' }};
   double radius = 1.0;
   //bool is_hydrogen = false;
 
@@ -258,6 +274,10 @@ struct Pose {
       //std::string
       char const element = str.substr( 77, 1 )[0];//ignore 2-char elements?
 
+      char const atom_name1 = str[ 13 ];
+      char const atom_name2 = str[ 14 ];
+      std::array< char, 2 > const atom_name{{ atom_name1, atom_name2 }};
+
       if( chain == previous_chain_name && previous_chain != nullptr ){
 	//Nothing to do here?
 	//maybe some asserts?
@@ -271,9 +291,9 @@ struct Pose {
       }
 
       if( element == 'H' ){
-	previous_chain->hydrogen_atoms.emplace_back( x, y, z, element );
+	previous_chain->hydrogen_atoms.emplace_back( x, y, z, element, atom_name );
       } else {
-	previous_chain->heavy_atoms.emplace_back( x, y, z, element );
+	previous_chain->heavy_atoms.emplace_back( x, y, z, element, atom_name );
       }
 
     }

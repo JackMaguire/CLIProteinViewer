@@ -50,7 +50,7 @@ int main( int argc, char **argv ){
   double z_rotation = 0.0;
 
   double d_rot = M_PI / 4.0;
-  render::DisplayMode display_mode = render::DisplayMode::BB;
+  render::DisplayMode display_mode = render::DisplayMode::BB_HEAVY;
 
   printf("\n");
   for( int h = 0; h < screen.height(); ++h ){

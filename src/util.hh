@@ -103,7 +103,7 @@ fit_display_parameters(){
   std::cout << "Fitting parameters for screen size: " << screen.height() << " x " << screen.width() << std::endl;
 
   spheres::Pose pose;
-  pose.chains[ "" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'X', 1.0 );
+  pose.chains[ "" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'X', "N ", 1.0 );
   pose.normalize();//just to be safe
   render::draw_pose_on_screen( pose, screen );
 

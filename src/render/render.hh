@@ -18,14 +18,41 @@ namespace render {
 enum class DisplayMode {
   ALLATOM,
   HEAVY,
-  BB,
-  N
+  BB_HEAVY,
+  BB_N
 };
 
 constexpr double CAMERA_Z = -10.0;
 constexpr double ABS_CAMERA_Z = 10.0;
 
 constexpr spheres::XYZ camera_position({ 0.0, 0.0, CAMERA_Z });
+
+bool
+sphere_is_eligible(
+  spheres::Sphere const & s,
+  DisplayMode const display_mode
+){
+  auto const && atomnames_match = [&s]( char n1, char n2 ) -> bool {
+    return s.atom_name[ 0 ] == n1 && s.atom_name[ 1 ] == n2;
+  };
+
+  switch( display_mode ){
+  case DisplayMode::ALLATOM:
+    return true;
+  case DisplayMode::HEAVY:
+    return s.atom != 'H';
+  case DisplayMode::BB_HEAVY:
+    return atomnames_match( 'N', ' ' ) ||
+      atomnames_match( 'C', ' ' ) ||
+      atomnames_match( 'C', 'A' ) ||
+      atomnames_match( 'O', ' ' );
+  case DisplayMode::BB_N:
+    return atomnames_match( 'N', ' ' );
+  default:
+    //assert?
+    return false;
+  }
+}
 
 void
 determine_color(
@@ -128,7 +155,7 @@ void
 draw_pose_on_screen(
   spheres::Pose const & pose,
   visualize::Screen & screen,
-  DisplayMode const display_mode  
+  DisplayMode const display_mode = DisplayMode::ALLATOM
 ) {
   size_t const width = screen.width();
   size_t const height = screen.height();
