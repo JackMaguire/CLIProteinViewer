@@ -25,6 +25,8 @@ constexpr int W_key = 119; //capitol is 87
 constexpr int S_key = 115; //83
 constexpr int A_key = 87;  //65
 constexpr int D_key = 100; //68
+constexpr int Q_key = 113;  //
+constexpr int E_key = 101; //
 
 enum class Key {
   NONE,
@@ -38,6 +40,9 @@ enum class Key {
   S,
   A,
   D,
+
+  Q,
+  E,
 
   ONE,
   TWO,
@@ -77,6 +82,9 @@ parse_int( int const command ){
   case S_key: return Key::S;
   case A_key: return Key::A;
   case D_key: return Key::D;
+
+  case Q_key: return Key::Q;
+  case E_key: return Key::E;
 
   default: return Key::NONE;
   };

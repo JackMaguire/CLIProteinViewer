@@ -48,21 +48,11 @@ int main( int argc, char **argv ){
   Screen screen;
   std::cout << screen.height() << " x " << screen.width() << std::endl;
 
-  Pose pose( args[1] );
+  Pose pose;
+  pose.chains[ "" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'X', "N ", 1.0 );
   pose.normalize_pose( true, true );
 
-
-  double x_rotation = 0.0;
-  double y_rotation = 0.0;
-  double z_rotation = 0.0;
-
-  double d_rot = M_PI / 4.0;
-  render::DisplayMode display_mode = render::DisplayMode::BB_HEAVY;
-
-  double zoomin_factor = 0.97;
-  double zoomout_factor = 1.05;
-
-  render::draw_pose_on_screen( pose, screen, display_mode );
+  render::draw_pose_on_screen( pose, screen );
 
   printf("\n");
   for( int h = 0; h < screen.height(); ++h ){
@@ -79,7 +69,9 @@ int main( int argc, char **argv ){
   newSettings.c_lflag &= (~ICANON & ~ECHO);
   tcsetattr( fileno( stdin ), TCSANOW, &newSettings );    
 
-  while( true ) {
+  bool time_to_break = false;
+
+  while( ! time_to_break ) {
     fd_set set;
     struct timeval tv;
 
@@ -99,94 +91,20 @@ int main( int argc, char **argv ){
       int const command = int( c );
       switch( parse_int( command ) ){
 
-	//Rotate:
-      case Key::UP:
-	z_rotation += d_rot;
-	repaint = true;
-	break;
-      case Key::DOWN:
-	z_rotation -= d_rot;
-	repaint = true;
-	break;
       case Key::LEFT:
-	y_rotation += d_rot;
+	settings::h_to_v_ratio *= 1.1;
 	repaint = true;
 	break;
       case Key::RIGHT:
-	y_rotation -= d_rot;
+	settings::h_to_v_ratio /= 1.1;
 	repaint = true;
 	break;
-      case Key::A:
-	x_rotation += d_rot;
-	repaint = true;
-	break;
-      case Key::D:
-	x_rotation -= d_rot;
-	repaint = true;
-	break;
-
-	// Zooming:
-      case Key::S:
-	settings::ZOOM *= zoomout_factor;
-	repaint = true;
-	break;
-      case Key::W:
-	settings::ZOOM *= zoomin_factor;
-	repaint = true;
-	break;
-
-	//Step Size:
-      case Key::ONE:
-	d_rot = M_PI / 16.0;
-	zoomin_factor = 0.97;
-	zoomout_factor = 1.05;
+      case Key::Q:
+	time_to_break = true;
 	repaint = false;
+	settings::save_to_file( new_filename );
+	settings::load_from_file( new_filename );
 	break;
-      case Key::TWO:
-	d_rot = M_PI / 8.0;
-	zoomin_factor = 0.93;
-	zoomout_factor = 1.10;
-	repaint = false;
-	break;
-      case Key::THREE:
-	d_rot = M_PI / 4.0;
-	zoomin_factor = 0.8;
-	zoomout_factor = 1.5;
-	repaint = false;
-	break;
-      case Key::FOUR:
-	d_rot = M_PI / 2.0;
-	zoomin_factor = 0.5;
-	zoomout_factor = 2.0;
-	repaint = false;
-	break;
-
-	//View Mode:
-      case Key::ZERO:
-	if( display_mode != render::DisplayMode::ALLATOM ){
-	  display_mode = render::DisplayMode::ALLATOM;
-	  repaint = true;
-	}
-	break;
-      case Key::NINE:
-	if( display_mode != render::DisplayMode::HEAVY ){
-	  display_mode = render::DisplayMode::HEAVY;
-	  repaint = true;
-	}
-	break;
-      case Key::EIGHT:
-	if( display_mode != render::DisplayMode::BB_HEAVY ){
-	  display_mode = render::DisplayMode::BB_HEAVY;
-	  repaint = true;
-	}
-	break;
-      case Key::SEVEN:
-	if( display_mode != render::DisplayMode::BB_N ){
-	  display_mode = render::DisplayMode::BB_N;
-	  repaint = true;
-	}
-	break;
-
       }
     }
     else if( res < 0 ){
@@ -195,9 +113,7 @@ int main( int argc, char **argv ){
     }
 
     if( repaint ){
-      Pose p( pose );
-      transform_pose( p, x_rotation, y_rotation, z_rotation );
-      render::draw_pose_on_screen( p, screen, display_mode );
+      render::draw_pose_on_screen( pose, screen );
       for( int h = 0; h < screen.height(); ++h ){
 	for( int w = 0; w < screen.width(); ++w ){
 	  //std::cout << screen.pixel( h, w ).r << std::endl;

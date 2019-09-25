@@ -22,7 +22,7 @@ int main( int argc, char **argv ){
   std::cout << screen.height() << " x " << screen.width() << std::endl;
 
   Pose pose;
-  pose.chains[ "" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'X', 1.0 );
+  pose.chains[ "" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'X', "N ", 1.0 );
 
   render::draw_pose_on_screen( pose, screen );
 

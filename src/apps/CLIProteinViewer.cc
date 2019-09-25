@@ -20,11 +20,37 @@
 #include <fcntl.h>
 #include <termios.h>
 
+#include <string>
+#include <fstream>
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::visualize;
 using namespace CLIProteinViewer::color;
 using namespace CLIProteinViewer::spheres;
 using namespace CLIProteinViewer::keylistener;
+
+void
+maybe_load_settings(){
+  //determine filename
+  const char *homedir;
+  if ((homedir = getenv("HOME")) == NULL) {
+    homedir = getpwuid(getuid())->pw_dir;
+  }
+  std::string filename( homedir );
+  filename += "/.clipv.settings";
+
+  //check if file exists
+  ifstream f( filename.c_str() );
+  if( f.good() ){
+    settings::load_from_file( filename );
+  } else {
+    std::cout << "It is recommended to run set_CLIPV_params beforehand to make sure you do not get a warpped image. See https://github.com/JackMaguire/CLIProteinViewer for more information." << std::endl;
+  }
+}
 
 int main( int argc, char **argv ){
 
@@ -34,6 +60,9 @@ int main( int argc, char **argv ){
     std::cerr << "Please pass exactly one pdb file" << std::endl;
     return -1;
   }
+
+  maybe_load_settings();
+
 
   CLIProteinViewer::fit_display_parameters();
 
