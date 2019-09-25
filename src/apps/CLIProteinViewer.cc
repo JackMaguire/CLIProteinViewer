@@ -43,7 +43,6 @@ int main( int argc, char **argv ){
   Pose pose( args[1] );
   pose.normalize_pose( true, true );
 
-  render::draw_pose_on_screen( pose, screen );
 
   double x_rotation = 0.0;
   double y_rotation = 0.0;
@@ -51,6 +50,8 @@ int main( int argc, char **argv ){
 
   double d_rot = M_PI / 4.0;
   render::DisplayMode display_mode = render::DisplayMode::BB_HEAVY;
+
+  render::draw_pose_on_screen( pose, screen, display_mode );
 
   printf("\n");
   for( int h = 0; h < screen.height(); ++h ){
@@ -177,7 +178,7 @@ int main( int argc, char **argv ){
     if( repaint ){
       Pose p( pose );
       transform_pose( p, x_rotation, y_rotation, z_rotation );
-      render::draw_pose_on_screen( p, screen );
+      render::draw_pose_on_screen( p, screen, display_mode );
       for( int h = 0; h < screen.height(); ++h ){
 	for( int w = 0; w < screen.width(); ++w ){
 	  //std::cout << screen.pixel( h, w ).r << std::endl;

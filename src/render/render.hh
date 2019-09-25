@@ -74,7 +74,11 @@ determine_color(
   default:   pixel.r = 255; break;
   }
 
-  //TODO multiply by t0 - ABS_CAMERA_Z?
+  if( t0 > ( ABS_CAMERA_Z + settings::shadow_buffer ) ){
+    pixel.r /= 2;
+    pixel.g /= 2;
+    pixel.b /= 2;
+  }
 }
 
 bool ray_intersect(
@@ -113,6 +117,7 @@ cast_ray(
   double t0 = 0;
   for( auto const & pair : pose.chains ){
     for( spheres::Sphere const & s : pair.second.heavy_atoms ){
+      //std::cout << int( display_mode ) << " " << s.atom_name[ 0 ] << s.atom_name[ 1 ] << ", " << sphere_is_eligible( s, display_mode ) << std::endl;
       if( ! sphere_is_eligible( s, display_mode ) ) continue;
 
       if( ray_intersect( ray_direction, s, t0 ) ){
