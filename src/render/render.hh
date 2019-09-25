@@ -114,6 +114,7 @@ cast_ray(
   double closest_distance = 99999;
 
   int chain_id = 0;
+  //double closest_t0 = 0;
   double t0 = 0;
   for( auto const & pair : pose.chains ){
     for( spheres::Sphere const & s : pair.second.heavy_atoms ){
@@ -152,7 +153,7 @@ cast_ray(
     pixel.g = 0;
     pixel.b = 0;
   } else {
-    determine_color( chain_id_for_closest_atom, t0, pixel );
+    determine_color( chain_id_for_closest_atom, closest_distance, pixel );
   }
 }
 
