@@ -5,6 +5,8 @@
 #include <representations/spheres.hh>
 #include <render/render.hh>
 
+#include <util.hh>
+
 #include <vector>
 
 using namespace CLIProteinViewer;
@@ -13,6 +15,9 @@ using namespace CLIProteinViewer::color;
 using namespace CLIProteinViewer::spheres;
 
 int main( int argc, char **argv ){
+
+  CLIProteinViewer::fit_display_parameters();
+
   Screen screen;
   std::cout << screen.height() << " x " << screen.width() << std::endl;
 

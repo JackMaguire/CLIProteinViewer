@@ -3,9 +3,11 @@
 namespace CLIProteinViewer {
 namespace settings {
 
-static double zoom = 0.0022;
+//These can just be members of the Screen object, no?
 
-constexpr double h_to_v_ratio = 1.8;
+static double ZOOM = 0.0072;
+
+static double h_to_v_ratio = 0.55;
 
 }
 }

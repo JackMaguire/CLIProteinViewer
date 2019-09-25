@@ -75,7 +75,7 @@ struct RotationMatrix {
   double zx;
   double zy;
   double zz;
-}
+};
 
 struct Sphere : public XYZ {
 
@@ -182,6 +182,14 @@ struct Pose {
       */
     }
 
+  }
+
+  void
+  normalize(
+    bool const position = true,
+    bool const scale = true
+  ) {
+    normalize_pose( position, scale );
   }
 
   Pose

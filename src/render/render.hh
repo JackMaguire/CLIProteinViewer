@@ -145,10 +145,10 @@ draw_pose_on_screen(
   for( size_t w = 0; w < width; w++ ){
     for( size_t h = 0; h < height; h++ ){
       double const dw = (-1.0 * width/2.) + w;
-      double const dir_x = dw * settings::zoom;
+      double const dir_x = dw * settings::ZOOM * settings::h_to_v_ratio;
 
       double const dh = (-1.0 * height/2.) + h;
-      double const dir_y = dh * settings::zoom * settings::h_to_v_ratio;
+      double const dir_y = dh * settings::ZOOM;
 
       double const dir_z = 1.0;
 
