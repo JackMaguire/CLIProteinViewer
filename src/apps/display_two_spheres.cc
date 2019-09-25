@@ -6,6 +6,7 @@
 #include <representations/spheres.hh>
 #include <render/render.hh>
 #include <keylistener/keylistener.hh>
+#include <util.hh>
 
 #include <stdio.h>
 #include <iostream>
@@ -23,6 +24,9 @@ using namespace CLIProteinViewer::spheres;
 using namespace CLIProteinViewer::keylistener;
 
 int main( int argc, char **argv ){
+
+  CLIProteinViewer::fit_display_parameters();
+
   Screen screen;
   std::cout << screen.height() << " x " << screen.width() << std::endl;
 
@@ -90,11 +94,11 @@ int main( int argc, char **argv ){
 
 	// ZOOMING:
       case Key::W:
-	settings::zoom *= 1.05;
+	settings::ZOOM *= 1.05;
 	repaint = true;
 	break;
       case Key::S:
-	settings::zoom *= 0.95;
+	settings::ZOOM *= 0.95;
 	repaint = true;
 	break;
       }
@@ -105,7 +109,9 @@ int main( int argc, char **argv ){
     }
 
     if( repaint ){
-      Pose p = pose.create_transformed_pose( x_rotation, y_rotation, z_rotation );
+      //Pose p = pose.create_transformed_pose( x_rotation, y_rotation, z_rotation );
+      Pose p( pose );
+      transform_pose( p, x_rotation, y_rotation, z_rotation );
       render::draw_pose_on_screen( p, screen );
       for( int h = 0; h < screen.height(); ++h ){
 	for( int w = 0; w < screen.width(); ++w ){

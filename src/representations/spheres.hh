@@ -192,35 +192,6 @@ struct Pose {
     normalize_pose( position, scale );
   }
 
-  Pose
-  create_transformed_pose(
-    double x_rotation_radian,
-    double y_rotation_radian,
-    double z_rotation_radian
-  ) {
-    //TODO
-    //https://math.stackexchange.com/questions/1741282/3d-calculate-new-location-of-point-after-rotation-around-origin
-    //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
-    Pose p( *this );
-
-    auto && operate = [=]( Sphere & s ){
-      //x rotation:
-      
-    };
-
-    for( auto & string_chain_pair : p.chains ){
-      auto chain = string_chain_pair.second;
-      for( Sphere & s : chain.heavy_atoms ){
-	operate( s );
-      }
-      for( Sphere & s : chain.hydrogen_atoms ){
-	operate( s );
-      }
-    }
-
-    return p;
-  }
-
   XYZ
   calc_origin() const {
     XYZ origin;
@@ -336,6 +307,42 @@ struct Pose {
     }
   }
 };
+
+void
+transform_pose(
+  Pose & p,
+  double x_rotation_radian,
+  double y_rotation_radian,
+  double z_rotation_radian
+) {
+  //TODO
+  //https://math.stackexchange.com/questions/1741282/3d-calculate-new-location-of-point-after-rotation-around-origin
+  //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
+  auto && operate = [=]( Sphere & s ){
+    Sphere const s0 = s;
+    //x rotation:
+
+    //y rotation:
+
+    //z rotation:
+    s.x = s0.x * cos( z_rotation_radian ) - s0.y * sin( z_rotation_radian );
+    s.y = s0.x * sin( z_rotation_radian ) + s0.y * cos( z_rotation_radian ); 
+    s.z = s0.z;
+    //std::cout << s.x << "," << s.y << "," << s.z << std::endl;
+  };
+
+  for( auto & string_chain_pair : p.chains ){
+    auto & chain = string_chain_pair.second;
+    for( Sphere & s : chain.heavy_atoms ){
+      operate( s );
+    }
+    for( Sphere & s : chain.hydrogen_atoms ){
+      operate( s );
+    }
+  }
+
+}
+
 
 }
 }
