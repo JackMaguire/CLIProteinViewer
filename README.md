@@ -1,1 +1,3 @@
 # CLIProteinViewer
+
+![CLIPV](CLIPV.png)
