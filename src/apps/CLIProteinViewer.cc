@@ -44,7 +44,7 @@ maybe_load_settings(){
   filename += "/.clipv.settings";
 
   //check if file exists
-  ifstream f( filename.c_str() );
+  std::ifstream f( filename.c_str() );
   if( f.good() ){
     settings::load_from_file( filename );
   } else {
@@ -62,7 +62,6 @@ int main( int argc, char **argv ){
   }
 
   maybe_load_settings();
-
 
   CLIProteinViewer::fit_display_parameters();
 
@@ -153,6 +152,16 @@ int main( int argc, char **argv ){
 	break;
       case Key::W:
 	settings::ZOOM *= zoomin_factor;
+	repaint = true;
+	break;
+
+	// Shadow:
+      case Key::Q:
+	settings::shadow_buffer += 0.1;
+	repaint = true;
+	break;
+      case Key::E:
+	settings::shadow_buffer -= 0.1;
 	repaint = true;
 	break;
 

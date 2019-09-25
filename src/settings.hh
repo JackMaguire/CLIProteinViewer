@@ -14,7 +14,7 @@ static double ZOOM = 0.0032;
 
 static double h_to_v_ratio = 0.55 / 1.2;
 
-static double shadow_buffer = 0.15;
+static double shadow_buffer = 0.1;
 
 void save_to_file( std::string const & filename ){
   std::ofstream myfile;
