@@ -4,4 +4,4 @@
 
 Test123
 
-{% include youtube2.html id=goAXC6FXkOo %}
+include youtube2.html id=goAXC6FXkOo
