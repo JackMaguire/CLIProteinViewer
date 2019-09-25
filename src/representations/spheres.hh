@@ -16,6 +16,7 @@ struct XYZ {
   constexpr XYZ() = default;
   constexpr XYZ( XYZ const & src ) = default;
   constexpr XYZ( XYZ & src ) = default;
+  constexpr XYZ & operator=( XYZ const & src ) = default;
 
   constexpr XYZ( double X, double Y, double Z ) :
   x( X ),
@@ -82,6 +83,8 @@ struct Sphere : public XYZ {
   constexpr Sphere() = default;
   constexpr Sphere( Sphere const & src ) = default;
   constexpr Sphere( Sphere && src ) = default;
+
+  constexpr Sphere & operator=( Sphere const & src ) = default;
 
   constexpr Sphere(
     double X,
@@ -319,15 +322,21 @@ transform_pose(
   //https://math.stackexchange.com/questions/1741282/3d-calculate-new-location-of-point-after-rotation-around-origin
   //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
   auto && operate = [=]( Sphere & s ){
-    Sphere const s0 = s;
     //x rotation:
+    Sphere s0 = s;
+    s.y = s0.y * cos( x_rotation_radian ) - s0.z * sin( x_rotation_radian );
+    s.z = s0.y * sin( x_rotation_radian ) + s0.z * cos( x_rotation_radian );
 
     //y rotation:
+    s0 = s;
+    s.z = s0.z * cos( y_rotation_radian ) - s0.x * sin( y_rotation_radian );
+    s.x = s0.z * sin( y_rotation_radian ) + s0.x * cos( y_rotation_radian );
 
     //z rotation:
+    s0 = s;
     s.x = s0.x * cos( z_rotation_radian ) - s0.y * sin( z_rotation_radian );
     s.y = s0.x * sin( z_rotation_radian ) + s0.y * cos( z_rotation_radian ); 
-    s.z = s0.z;
+
     //std::cout << s.x << "," << s.y << "," << s.z << std::endl;
   };
 

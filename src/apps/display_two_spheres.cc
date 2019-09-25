@@ -84,20 +84,28 @@ int main( int argc, char **argv ){
 	repaint = true;
 	break;
       case Key::LEFT:
-	x_rotation += 0.1;
+	y_rotation += 0.1;
 	repaint = true;
 	break;
       case Key::RIGHT:
+	y_rotation -= 0.1;
+	repaint = true;
+	break;
+      case Key::A:
+	x_rotation += 0.1;
+	repaint = true;
+	break;
+      case Key::D:
 	x_rotation -= 0.1;
 	repaint = true;
 	break;
 
 	// ZOOMING:
-      case Key::W:
+      case Key::S:
 	settings::ZOOM *= 1.05;
 	repaint = true;
 	break;
-      case Key::S:
+      case Key::W:
 	settings::ZOOM *= 0.95;
 	repaint = true;
 	break;
@@ -109,7 +117,6 @@ int main( int argc, char **argv ){
     }
 
     if( repaint ){
-      //Pose p = pose.create_transformed_pose( x_rotation, y_rotation, z_rotation );
       Pose p( pose );
       transform_pose( p, x_rotation, y_rotation, z_rotation );
       render::draw_pose_on_screen( p, screen );
