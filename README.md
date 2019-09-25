@@ -1,5 +1,5 @@
 # CLIProteinViewer
 
-![CLIPV](CLIPV.png)
+![CLIPV](CLIPV_preview.gif)
 
 test456
