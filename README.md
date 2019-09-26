@@ -103,11 +103,15 @@ bash just_install_everything_please.sh
 Sometimes visualization can get warped such that objects look too fat or skinny.
 I did my best to fix this but it is not a generally solvable problem
 because your computer's text size and font might be different than mine.
-Luckily, there is a one-time fix for this.
+Luckily, there is a fix for this and it only needs to be done once (per user).
 
-First, make your console's text size very small (like we talked about above).
+First, make your console's text size very small as described above.
 Then, run `./set_CLIPV_params` and use the left and right arrow keys to modify the circle.
 The right arrow key should make it wider, the left should make it thinner.
 The goal is for the circle to be as round as possible (as opposed to an oval).
 
 When you are done, hit `q` and your settings will be saved for that computer.
+
+## Known Issues
+
+- The `a` button only seems to work when shifted.
