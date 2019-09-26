@@ -144,6 +144,12 @@ int main( int argc, char **argv ){
 	x_rotation -= d_rot;
 	repaint = true;
 	break;
+      case Key::R:
+	x_rotation = 0;
+	y_rotation = 0;
+	z_rotation = 0;
+	repaint = true;
+	break;
 
 	// Zooming:
       case Key::S:

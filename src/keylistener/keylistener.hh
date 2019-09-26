@@ -27,6 +27,7 @@ constexpr int A_key = 87;  //65
 constexpr int D_key = 100; //68
 constexpr int Q_key = 113;  //
 constexpr int E_key = 101; //
+constexpr int R_key = 114; //
 
 enum class Key {
   NONE,
@@ -43,6 +44,8 @@ enum class Key {
 
   Q,
   E,
+
+  R,
 
   ONE,
   TWO,
@@ -85,6 +88,7 @@ parse_int( int const command ){
 
   case Q_key: return Key::Q;
   case E_key: return Key::E;
+  case R_key: return Key::R;
 
   default: return Key::NONE;
   };
