@@ -10,7 +10,13 @@ using namespace CLIProteinViewer::color;
 
 int main(){
 
-  
+  //char pinkish[] = { 0x1b, '[', '3', '8',';','5',';','2','1','2','m',0 };
+  char pinkish[] = { 0x1b, '[', '3', '8',';','5',';','2','1','2','m',0 };
+  char begin[] =   { 0x1b, '[', '3', '8',';','5',';'};
+  char end[] =     { 'm',0 };
+  char normal[] = { 0x1b, '[', '0', ';', '3', '9', 'm', 0 };
+
+  std::cout << pinkish << "test" << normal << std::endl;
 
   return 0;
 
