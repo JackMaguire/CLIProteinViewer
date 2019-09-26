@@ -23,7 +23,7 @@ constexpr int ZERO_key = 48;
 
 constexpr int W_key = 119; //capitol is 87
 constexpr int S_key = 115; //83
-constexpr int A_key = 87;  //65
+constexpr int A_key = 97;  //65
 constexpr int D_key = 100; //68
 constexpr int Q_key = 113;  //
 constexpr int E_key = 101; //

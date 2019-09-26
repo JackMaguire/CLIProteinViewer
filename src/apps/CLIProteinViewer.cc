@@ -27,6 +27,8 @@
 #include <sys/types.h>
 #include <pwd.h>
 
+//#define KEEP_MASTER_POSE
+
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::visualize;
 using namespace CLIProteinViewer::color;
@@ -122,6 +124,7 @@ int main( int argc, char **argv ){
       int const command = int( c );
       switch( parse_int( command ) ){
 
+#ifdef KEEP_MASTER_POSE
 	//Rotate:
       case Key::UP:
 	z_rotation += d_rot;
@@ -153,6 +156,39 @@ int main( int argc, char **argv ){
 	z_rotation = 0;
 	repaint = true;
 	break;
+#else
+	//Rotate:
+      case Key::UP:
+	transform_pose( pose, 0.0, 0.0, d_rot );
+	repaint = true;
+	break;
+      case Key::DOWN:
+	transform_pose( pose, 0.0, 0.0, -1.0 * d_rot );
+	repaint = true;
+	break;
+      case Key::LEFT:
+	transform_pose( pose, 0.0, d_rot, 0.0 );
+	repaint = true;
+	break;
+      case Key::RIGHT:
+	transform_pose( pose, 0.0, -1.0 * d_rot, 0.0 );
+	repaint = true;
+	break;
+      case Key::A:
+	transform_pose( pose, d_rot, 0.0, 0.0 );
+	repaint = true;
+	break;
+      case Key::D:
+	transform_pose( pose, -1.0 * d_rot, 0.0, 0.0 );
+	repaint = true;
+	break;
+      case Key::R:
+	x_rotation = 0;
+	y_rotation = 0;
+	z_rotation = 0;
+	repaint = true;
+	break;
+#endif
 
 	// Zooming:
       case Key::S:
@@ -234,8 +270,12 @@ int main( int argc, char **argv ){
     }
 
     if( repaint ){
+#ifdef KEEP_MASTER_POSE
       Pose p( pose );
       transform_pose( p, x_rotation, y_rotation, z_rotation );
+#else
+      Pose const & p = pose;
+#endif
       render::draw_pose_on_screen( p, screen, display_mode );
       for( int h = 0; h < screen.height(); ++h ){
 	for( int w = 0; w < screen.width(); ++w ){
