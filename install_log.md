@@ -1,4 +1,4 @@
-```sh
+```
 $ git clone https://github.com/JackMaguire/CLIProteinViewer.git
 Cloning into 'CLIProteinViewer'...
 remote: Enumerating objects: 46, done.
@@ -11,15 +11,15 @@ $ cd CLIProteinViewer
 $ bash just_install_everything_please.sh
 Installation was a success. To use this tool in your current session, run 'source /nas/longleaf/home/jackmag/.bashrc'. The CLIProteinViewer will be available for all future session.
 $ source /nas/longleaf/home/jackmag/.bashrc
-$ ./set_CLIPV_params
+$ ./set_CLIPV_params #I made my screen's text very small before running this. On mac, this is done with command and the minus sign
 Creating file: /nas/longleaf/home/jackmag/.clipv.settings
 Fitting parameters for screen size: 183 x 678
 183 x 678
 ```
 
-Omitting the visual output of the program itself
+Omitting the visual output of the program itself. I ended up hitting the left arrow key once and then hit `q`
 
-```sh
+```
 $ cd /path/to/my/pdb/files
 $ CLIProteinViewer my_protein.pdb #can pass multiple pdb files
 ```
