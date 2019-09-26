@@ -19,6 +19,10 @@ This tool is useful for people who often run protein simulations on clusters and
 This program uses each character as a single pixel.
 The smaller your text is, the higher-resolution our image will be.
 
+I often make my text so small that it can't be read.
+In this case, I recommend typing out your run command _before_ making the text small,
+but definitely make the text small before running your command (as shown in the gif below).
+
 #### 2. Start Program
 
 Run `CLIProteinViewer my_protein.pdb`
