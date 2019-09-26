@@ -115,3 +115,6 @@ When you are done, hit `q` and your settings will be saved for that computer.
 ## Known Issues
 
 - The `a` button only seems to work when shifted.
+
+- The console's colors do not always return back to normal upon completion.
+  - Maybe it is time that I implement a "close" button that takes more care to reset the console.
