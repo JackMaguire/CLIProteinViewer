@@ -56,8 +56,8 @@ int main( int argc, char **argv ){
 
   std::vector< std::string > args( argv, argv + argc );
 
-  if( args.size() != 2 ){
-    std::cerr << "Please pass exactly one pdb file" << std::endl;
+  if( args.size() < 2 ){
+    std::cerr << "Please pass at least one pdb file" << std::endl;
     return -1;
   }
 
@@ -69,6 +69,9 @@ int main( int argc, char **argv ){
   std::cout << screen.height() << " x " << screen.width() << std::endl;
 
   Pose pose( args[1] );
+  for( unsigned ii = 2; ii < args.size(); ++ii ){
+    pose.load_from_pdb_file( args[ ii ] );
+  }
   pose.normalize_pose( true, true );
 
 

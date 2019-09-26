@@ -16,7 +16,7 @@ struct XYZ {
   constexpr XYZ() = default;
   constexpr XYZ( XYZ const & src ) = default;
   constexpr XYZ( XYZ & src ) = default;
-  constexpr XYZ & operator=( XYZ const & src ) = default;
+  XYZ & operator=( XYZ const & src ) = default;
 
   constexpr XYZ( double X, double Y, double Z ) :
   x( X ),
@@ -28,14 +28,14 @@ struct XYZ {
   double y = 0.0;
   double z = 0.0;
 
-  constexpr void normalize() {
+  void normalize() {
     double const l = sqrt( x*x + y*y + z*z );
     x /= l;
     y /= l;
     z /= l;
   }
 
-  constexpr double & operator[]( size_t const i ){
+  double & operator[]( size_t const i ){
     switch( i ){
     case 0: return x;
     case 1: return y;
@@ -48,13 +48,13 @@ struct XYZ {
 
 struct Sphere : public XYZ {
 
-  constexpr Sphere() = default;
-  constexpr Sphere( Sphere const & src ) = default;
-  constexpr Sphere( Sphere && src ) = default;
+  Sphere() = default;
+  Sphere( Sphere const & src ) = default;
+  Sphere( Sphere && src ) = default;
 
-  constexpr Sphere & operator=( Sphere const & src ) = default;
+  Sphere & operator=( Sphere const & src ) = default;
 
-  constexpr Sphere(
+  Sphere(
     double X,
     double Y,
     double Z,
