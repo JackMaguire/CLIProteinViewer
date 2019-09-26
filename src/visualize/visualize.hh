@@ -67,18 +67,6 @@ struct Screen {
   void set_to_splash_screen();
 };
 
-void
-draw(
-  Screen const & screen
-){
-  for( std::vector< Pixel > const & row : screen.pixels ){
-    for( Pixel const & pix : row ){
-      std::cout << "COLOR" << "MAGIC";
-    }
-    std::cout << std::endl;
-  }
-}
-
 inline
 void
 Screen::set_to_splash_screen(){
