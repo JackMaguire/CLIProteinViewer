@@ -48,7 +48,7 @@ maybe_load_settings(){
 }
 
 
-int main( int argc, char **argv ){
+int main(){
 
   //Determine save file
   const char *homedir;
@@ -122,6 +122,8 @@ int main( int argc, char **argv ){
 	repaint = false;
 	settings::save_to_file( new_filename );
 	settings::load_from_file( new_filename );
+	break;
+      default:
 	break;
       }
     }

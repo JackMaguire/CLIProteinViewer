@@ -193,12 +193,6 @@ int main( int argc, char **argv ){
 	transform_pose( pose, -1.0 * d_rot, 0.0, 0.0 );
 	repaint = true;
 	break;
-      case Key::R:
-	x_rotation = 0;
-	y_rotation = 0;
-	z_rotation = 0;
-	repaint = true;
-	break;
 #endif
 
 	// Zooming:
