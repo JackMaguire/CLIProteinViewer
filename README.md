@@ -95,7 +95,6 @@ There may be warnings that appear but those are fine.
 ```sh
 cd CLIProteinViewer
 bash just_install_everything_please.sh
-# double-check the files ./set_CLIPV_params and ./CLIProteinViewer exist
 ```
 
 #### 3. (optional) Configure
