@@ -4,7 +4,10 @@ CLIProteinViewer is an open-source and dependency-free tool to visually inspect 
 
 ![CLIPV](CLIPV.png)
 
-This tool is useful for people who often run protein simulations on clusters and want to quickly visualize proteins without `scp`-ing them back to their local computer. Some example use cases are:
+This will never be a full replacement for visualization tools like PyMOL,
+but I find CLIProteinViewer to be very useful for a few small but common use cases.
+Namely, this tool is useful for people who often run protein simulations on clusters and want to quickly visualize proteins without `scp`-ing them back to their local computer.
+Some example use cases are:
 
 - _"Wait, which chain is the [insert name of interesting protein] again? Let me look"_
 
