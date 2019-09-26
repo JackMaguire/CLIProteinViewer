@@ -89,7 +89,9 @@ If the steps below are too complicated, you can see my actual installation log a
 
 #### 1. Clone this repository
 
-`git clone https://github.com/JackMaguire/CLIProteinViewer.git`
+```sh
+git clone https://github.com/JackMaguire/CLIProteinViewer.git
+```
 
 #### 2. Compile
 
