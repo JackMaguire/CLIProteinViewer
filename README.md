@@ -82,6 +82,9 @@ I did not program in a quit key so just hit `ctrl+c` when you are done.
 
 ## Installation
 
+Installation of any software can be intimidating.
+If the steps below are too complicated, you can see my actual installation log at [this link](install_log.md)
+
 #### 1. Clone this repository
 
 `git clone https://github.com/JackMaguire/CLIProteinViewer.git`
