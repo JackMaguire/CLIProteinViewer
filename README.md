@@ -1,7 +1,5 @@
 # CLIProteinViewer
 
-## What?
-
 CLIProteinViewer is an open-source and dependency-free tool to visually inspect your protein's structure using colored text in your console, as shown here:
 
 ![CLIPV](CLIPV.png)
