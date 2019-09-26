@@ -2,21 +2,55 @@
 
 ## What?
 
-CLIProteinViewer is an open-source and dependency-free tool to visually inspect your protein's structure using colored text in your console, as shown below.
+CLIProteinViewer is an open-source and dependency-free tool to visually inspect your protein's structure using colored text in your console, as shown here:
 
 ![CLIPV](CLIPV.png)
 
-## Why?
+This tool is useful for people who often run protein simulations on clusters and want to quickly visualize proteins without `scp`-ing them back to their local computer. Some example use cases are:
 
-It can 
+-_"Wait, which chain is the [insert name of interesting protein] again? Let me look"_
 
-## How?
+-_"Wow that simulation took a long time. Is my protein unfolded? Let me look"_
 
-### Usage
+-_"I want to dock these chains together but can't remember if they are already docked in this structure. Let me look"_
+
+## Usage
+
+#### 1. Make your text size very small
+
+This program uses each character as a single pixel.
+The smaller your text is, the higher-resolution our image will be.
+
+#### 2. Start Program
+
+Run `CLIProteinViewer my_protein.pdb`
+
+This can be done with multiple pdb files at a time
+but I recommend starting with just one first.
+
+#### 3. Move The Camera
+
+The controls are listed below.
+
+My first steps are usually:
+- `4` to increase the step size of the camera
+(increases the amount the camera moves when zooming or rotating)
+- `w` once or twice to zoom in
+- `left arrow` a few times to quickly rotate the protein
+- `1` or `2` to decrease the step size of the camera for more local viewing
+
+Depending on the protein, I also sometimes hit `e` (or `q`) at the beginning to adjust where the shadows fall.
+
+There is a gif below that shows what this might look like for a dimer of 4-helix bundles
+
+#### 4. Exit
+
+Nothing fancy here.
+I did not program in a quit key so just hit `ctrl+c` when you are done.
 
 ![CLIPV](CLIPV_preview.gif)
 
-#### Keys
+### Keys
 
 | Key | Outcome |
 | - | - |
@@ -36,7 +70,7 @@ It can
 
 Note: All of these letters are lowercase, except sometimes the 'A' only works as uppercase. I'm looking into it.
 
-### Installation
+## Installation
 
 #### 1. Clone this repository
 
