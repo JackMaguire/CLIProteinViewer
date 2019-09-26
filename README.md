@@ -70,7 +70,7 @@ There is a gif below that shows what this might look like for a dimer of 4-helix
 | 8 | Show non-hydrogen backbone atoms |
 | 7 | Show backbone nitrogen atoms |
 
-Note: All of these letters are lowercase, except sometimes the 'A' only works as uppercase. I'm looking into it.
+Note: All of these letters are lowercase
 
 
 ### 4. Exit
@@ -113,8 +113,6 @@ The goal is for the circle to be as round as possible (as opposed to an oval).
 When you are done, hit `q` and your settings will be saved for that computer.
 
 ## Known Issues
-
-- The `a` button only seems to work when shifted.
 
 - The console's colors do not always return back to normal upon completion.
   - Maybe it is time that I implement a "close" button that takes more care to reset the console.
