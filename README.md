@@ -14,7 +14,7 @@ This tool is useful for people who often run protein simulations on clusters and
 
 ## Usage
 
-#### 1. Make your text size very small
+### 1. Make your text size very small
 
 This program uses each character as a single pixel.
 The smaller your text is, the higher-resolution our image will be.
@@ -23,14 +23,14 @@ I often make my text so small that it can't be read.
 In this case, I recommend typing out your run command _before_ making the text small,
 but definitely make the text small before running your command (as shown in the gif below).
 
-#### 2. Start Program
+### 2. Start Program
 
 Run `CLIProteinViewer my_protein.pdb`
 
 This can be done with multiple pdb files at a time
 but I recommend starting with just one first.
 
-#### 3. Move The Camera
+### 3. Move The Camera
 
 The controls are listed below.
 
@@ -38,21 +38,14 @@ My first steps are usually:
 - `4` to increase the step size of the camera
 (increases the amount the camera moves when zooming or rotating)
 - `w` once or twice to zoom in
-- `left arrow` a few times to quickly rotate the protein
+- `left arrow` a few times to quickly rotate the protein and gain my bearings
 - `1` or `2` to decrease the step size of the camera for more local viewing
 
 Depending on the protein, I also sometimes hit `e` (or `q`) at the beginning to adjust where the shadows fall.
 
 There is a gif below that shows what this might look like for a dimer of 4-helix bundles
 
-#### 4. Exit
-
-Nothing fancy here.
-I did not program in a quit key so just hit `ctrl+c` when you are done.
-
-![CLIPV](CLIPV_preview.gif)
-
-### Keys
+#### Controls
 
 | Key | Outcome |
 | - | - |
@@ -72,6 +65,14 @@ I did not program in a quit key so just hit `ctrl+c` when you are done.
 
 Note: All of these letters are lowercase, except sometimes the 'A' only works as uppercase. I'm looking into it.
 
+
+### 4. Exit
+
+Nothing fancy here.
+I did not program in a quit key so just hit `ctrl+c` when you are done.
+
+![CLIPV](CLIPV_preview.gif)
+
 ## Installation
 
 #### 1. Clone this repository
@@ -80,8 +81,8 @@ Note: All of these letters are lowercase, except sometimes the 'A' only works as
 
 #### 2. Compile
 
-This step was designed to be as easy as possible.
-Please contact me if you are running into troubles here.
+This step was designed to be as easy as possible,
+so please contact me if you are running into troubles here.
 There may be warnings that appear but those are fine.
 
 ```sh
