@@ -58,6 +58,14 @@ int main( int argc, char **argv ){
 
   std::vector< std::string > args( argv, argv + argc );
 
+  for( std::string const & arg : args ){
+    if( arg == "-h" || arg == "--help" ){
+      std::cout << "Usage: CLIProteinViewer [name of one or more pdb files]" << std::endl;
+      std::cout << "Please go to https://jackmaguire.github.io/CLIProteinViewer/ for more instructions" << std::endl;
+      return 0;
+    }
+  }
+
   if( args.size() < 2 ){
     std::cerr << "Please pass at least one pdb file" << std::endl;
     return -1;
