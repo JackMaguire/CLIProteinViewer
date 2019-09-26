@@ -80,6 +80,8 @@ I did not program in a quit key so just hit `ctrl+c` when you are done.
 
 ![CLIPV](CLIPV_preview.gif)
 
+_Shown above is a real time example of viewing the protein with pdb code 3U3B. Be patient, I opted to show the text-shrinking setup step so the cool stuff does not happen for a few seconds._
+
 ## Installation
 
 Installation of any software can be intimidating.
@@ -87,7 +89,9 @@ If the steps below are too complicated, you can see my actual installation log a
 
 #### 1. Clone this repository
 
-`git clone https://github.com/JackMaguire/CLIProteinViewer.git`
+```sh
+git clone https://github.com/JackMaguire/CLIProteinViewer.git
+```
 
 #### 2. Compile
 
