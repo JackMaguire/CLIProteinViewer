@@ -29,6 +29,8 @@ constexpr int Q_key = 113;  //
 constexpr int E_key = 101; //
 constexpr int R_key = 114; //
 
+constexpr int delete_key = 127; //
+
 enum class Key {
   NONE,
 
@@ -56,7 +58,9 @@ enum class Key {
   SEVEN,
   EIGHT,
   NINE,
-  ZERO
+  ZERO,
+
+  DELETE
 };
 
 //The "correct" way would be to keep a short history of the previous 3 numbers.
@@ -89,6 +93,8 @@ parse_int( int const command ){
   case Q_key: return Key::Q;
   case E_key: return Key::E;
   case R_key: return Key::R;
+
+  case delete_key: return Key::DELETE;
 
   default: return Key::NONE;
   };
