@@ -35,9 +35,9 @@ void load_from_file( std::string const & filename ){
     if (!(iss >> a >> b)) { break; }
     std::cout << a << " AND " << b << std::endl;
 
-    if( a == "ZOOM" ){ ZOOM == std::stod( b ); }
-    else if( a == "h_to_v_ratio" ){ h_to_v_ratio == std::stod( b ); }
-    else if( a == "shadow_buffer" ){ shadow_buffer == std::stod( b ); }
+    if( a == "ZOOM" ){ ZOOM = std::stod( b ); }
+    else if( a == "h_to_v_ratio" ){ h_to_v_ratio = std::stod( b ); }
+    else if( a == "shadow_buffer" ){ shadow_buffer = std::stod( b ); }
   }
   myfile.close();  
 }
