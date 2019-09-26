@@ -27,6 +27,8 @@
 #include <sys/types.h>
 #include <pwd.h>
 
+//This will get removed sooner or later
+//Please remove it if the year is 2020 or later and it is still commented out
 //#define KEEP_MASTER_POSE
 
 using namespace CLIProteinViewer;
@@ -84,10 +86,11 @@ int main( int argc, char **argv ){
   }
   pose.normalize_pose( true, true );
 
-
+#ifdef KEEP_MASTER_POSE
   double x_rotation = 0.0;
   double y_rotation = 0.0;
   double z_rotation = 0.0;
+#endif
 
   double d_rot = M_PI / 4.0;
   render::DisplayMode display_mode = render::DisplayMode::BB_HEAVY;
@@ -269,7 +272,8 @@ int main( int argc, char **argv ){
 	  repaint = true;
 	}
 	break;
-
+      default:
+	break;
       }
     }
     else if( res < 0 ){
