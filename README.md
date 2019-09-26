@@ -32,13 +32,20 @@ but I recommend starting with just one first.
 
 ### 3. Move The Camera
 
-The controls are listed below.
+The controls are listed below. In general, there are 3 things you can do:
+- rotate the camera
+- change the camera's properties
+  - zoom in and out
+  - change the distance where the shadows fall (hard to explain, best way is to just try it)
+  - change the step size of the camera. `4` gives largest steps, `1` gives smallest. Large steps increase how much the camera moves when zooming and rotating.
+- change the protein's representation
+
 
 My first steps are usually:
 - `4` to increase the step size of the camera
 (increases the amount the camera moves when zooming or rotating)
 - `w` once or twice to zoom in
-- `left arrow` a few times to quickly rotate the protein and gain my bearings
+- `left arrow` a few times to quickly rotate the protein and gain my bearings. 4 times will give you a full 360 degree rotation with the `4` step size
 - `1` or `2` to decrease the step size of the camera for more local viewing
 
 Depending on the protein, I also sometimes hit `e` (or `q`) at the beginning to adjust where the shadows fall.
