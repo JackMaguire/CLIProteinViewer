@@ -16,6 +16,26 @@ It can
 
 ![CLIPV](CLIPV_preview.gif)
 
+#### Keys
+
+| Key | Outcome |
+| - | - |
+| Left/Right arrow keys | Rotate Z Axis (primary) |
+| Up/Down arrow keys | Rotate X Axis |
+| A/D | Rotate Y Axis |
+| W/S | Zoom in/out |
+| Q/E | Change shadow distance |
+| 1 | Set rotation increment to pi/16 |
+| 2 | Set rotation increment to pi/8 |
+| 3 | Set rotation increment to pi/4 |
+| 4 | Set rotation increment to pi/2 |
+| 0 | Show all atoms |
+| 9 | Show non-hydrogen atoms |
+| 8 | Show non-hydrogen backbone atoms |
+| 7 | Show backbone nitrogen atoms |
+
+Note: All of these letters are lowercase, except sometimes the 'A' only works as uppercase. I'm looking into it.
+
 ### Installation
 
 #### 1. Clone this repository
