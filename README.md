@@ -8,7 +8,7 @@ This tool is useful for people who often run protein simulations on clusters and
 
 -_"Wait, which chain is the [insert name of interesting protein] again? Let me look"_
 
--_"Wow that simulation took a long time. Is my protein unfolded? Let me look"_
+-_"Wow that simulation took a long time. Did my protein unfold? Let me look"_
 
 -_"I want to dock these chains together but can't remember if they are already docked in this structure. Let me look"_
 
