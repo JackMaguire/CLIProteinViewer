@@ -122,3 +122,13 @@ When you are done, hit `q` and your settings will be saved for that computer.
 
 - The console's colors do not always return back to normal upon completion.
   - Maybe it is time that I implement a "close" button that takes more care to reset the console.
+
+## Future Work
+
+The current implementation solves my needs so I do not plan to build much more on top of it.
+That said, here are a few ideas that have crossed my mind:
+
+- "Save Image" functionality that simply saves a .ppm image to disk
+- TUI session, like a text editor
+  - consider ncurses or [CPPurses](https://github.com/a-n-t-h-o-n-y/CPPurses) 
+  - won't be dependency free, would need to build as CLIProteinViewerPlus
