@@ -81,7 +81,7 @@ Note: All of these letters are lowercase
 Nothing fancy here.
 I did not program in a quit key so just hit `ctrl+c` when you are done.
 
-![CLIPV](CLIPV_preview.gif)
+![CLIPV](CLIPV_preview.256.gif)
 
 _Shown above is a real time example of viewing the protein with pdb code 3U3B. Be patient, I opted to show the text-shrinking setup step so the cool stuff does not happen for a few seconds._
 
