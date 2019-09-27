@@ -3,6 +3,9 @@
 
 #include <visualize/colors.hh>
 
+#include <sstream>
+#include <string>
+
 /*
   Useful links:
   https://jonasjacek.github.io/colors/
@@ -41,19 +44,17 @@ struct Color256Matcher {
 
   Color256 const &
   determine_closest_color( int r, int g, int b ) const {
-    int closest_code = 0;
     float closest_score = 999;
-    Color256 * closest = nullptr;
+    Color256 const * closest = nullptr;
 
-    for( unsigned i = 0; i < colors.size(); ++i ){
-      Color256 const & c = colors[ i ];
+    for( unsigned i = 0; i < colors256.size(); ++i ){
+      Color256 const & c = colors256[ i ];
       float const r_diff = c.r - r;
       float const g_diff = c.g - g;
       float const b_diff = c.b - b;
       float const diff_sq = (r_diff*r_diff) + (g_diff*g_diff) + (b_diff*b_diff);
       if( diff_sq < closest_score || closest == nullptr ){
 	closest_score = diff_sq;
-	closest_code = c.code;
 	closest = &c;
       }
     }
@@ -63,7 +64,7 @@ struct Color256Matcher {
 
   
 
-  ColorMatcher(){
+  Color256Matcher(){
     {
       char c[] = { 0x1b, '[', '3', '8', ';', '5', ';', '0', 'm', 0 };
       std::stringstream ss;

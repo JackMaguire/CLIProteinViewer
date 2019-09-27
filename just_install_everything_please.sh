@@ -2,6 +2,11 @@
 
 CXX="no_cc"
 
+defines=""
+if [[ `tput colors` -ge 256 ]]; then
+    defines="$defines -DCOLOR256"
+fi
+
 if `g++ --version 1>/dev/null 2>/dev/null`; then
     CXX="g++"
 elif `gcc --version 1>/dev/null 2>/dev/null`; then
@@ -17,12 +22,12 @@ fi
 
 rm CLIProteinViewer set_CLIPV_params 2>/dev/null
 
-$CXX src/apps/CLIProteinViewer.cc -o CLIProteinViewer -Isrc -O3 -std=c++11 \
+$CXX src/apps/CLIProteinViewer.cc -o CLIProteinViewer -Isrc -O3 -std=c++11 $defines \
      1>/dev/null 2>/dev/null
-$CXX src/apps/set_CLIPV_params.cc -o set_CLIPV_params -Isrc -O3 -std=c++11 \
+$CXX src/apps/set_CLIPV_params.cc -o set_CLIPV_params -Isrc -O3 -std=c++11 $defines \
      1>/dev/null 2>/dev/null
 
-if [ ! -f CLIProteinViewer ] && [ ! -f set_CLIPV_params ]; then
+if [ ! -f CLIProteinViewer ] || [ ! -f set_CLIPV_params ]; then
     echo "Error: Compilation seemed to fail somehow"
     exit 1
 fi

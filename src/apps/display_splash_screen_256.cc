@@ -34,7 +34,7 @@ int main(){
 
       auto const & pixel = screen.pixel( h, w );
       auto const & color = matcher.determine_closest_color( pixel.r, pixel.g, pixel.b );
-      std::cout << color.cmd << "X" << std::endl;
+      std::cout << color.cmd << "X";
     }
   }
   std::cout << normal << std::endl;

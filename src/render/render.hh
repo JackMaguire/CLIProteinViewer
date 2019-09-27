@@ -74,11 +74,34 @@ determine_color(
   default:   pixel.r = 255; break;
   }
 
+#ifdef COLOR256
+  if( t0 > ( ABS_CAMERA_Z + settings::shadow_buffer ) ){
+    double const diff = t0 - ( ABS_CAMERA_Z + settings::shadow_buffer );
+    //std::cout << diff << std::endl;
+    //auto const diff_plus_one = 1 + diff;
+    pixel.r = int( double(pixel.r) - diff*1000 );
+    pixel.g = int( double(pixel.g) - diff*1000 );
+    pixel.b = int( double(pixel.b) - diff*1000 );
+  } else if ( t0 < ( ABS_CAMERA_Z - settings::shadow_buffer ) ) {
+    double const diff = ( ABS_CAMERA_Z - settings::shadow_buffer ) - t0;
+    pixel.r = int( double(pixel.r) + diff*500 );
+    pixel.g = int( double(pixel.g) + diff*500 );
+    pixel.b = int( double(pixel.b) + diff*500 );
+  }
+
+  if( pixel.r < 0 )   pixel.r = 0;
+  if( pixel.r > 255 ) pixel.r = 255;
+  if( pixel.g < 0 )   pixel.g = 0;
+  if( pixel.g > 255 ) pixel.g = 255;
+  if( pixel.b < 0 )   pixel.b = 0;
+  if( pixel.b > 255 ) pixel.b = 255;
+#else
   if( t0 > ( ABS_CAMERA_Z + settings::shadow_buffer ) ){
     pixel.r /= 2;
     pixel.g /= 2;
     pixel.b /= 2;
   }
+#endif
 }
 
 bool ray_intersect(

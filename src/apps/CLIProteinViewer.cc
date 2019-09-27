@@ -27,6 +27,10 @@
 #include <sys/types.h>
 #include <pwd.h>
 
+#ifdef COLOR256
+#include <visualize/color256.hh>
+#endif
+
 //This will get removed sooner or later
 //Please remove it if the year is 2020 or later and it is still commented out
 //#define KEEP_MASTER_POSE
@@ -90,6 +94,10 @@ int main( int argc, char **argv ){
   double x_rotation = 0.0;
   double y_rotation = 0.0;
   double z_rotation = 0.0;
+#endif
+
+#ifdef COLOR256
+  color256::Color256Matcher matcher;
 #endif
 
   double d_rot = M_PI / 4.0;
@@ -286,7 +294,13 @@ int main( int argc, char **argv ){
       for( int h = 0; h < screen.height(); ++h ){
 	for( int w = 0; w < screen.width(); ++w ){
 	  //std::cout << screen.pixel( h, w ).r << std::endl;
+#ifdef COLOR256
+	  auto const & pixel = screen.pixel( h, w );
+	  auto const & color = matcher.determine_closest_color( pixel.r, pixel.g, pixel.b );
+	  std::cout << color.cmd << "X";
+#else	  
 	  print_nearest_color( screen.pixel( h, w ) );
+#endif
 	}
       }      
     }
