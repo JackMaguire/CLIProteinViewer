@@ -133,6 +133,10 @@ The goal is for the circle to be as round as possible (as opposed to an oval).
 
 When you are done, hit `q` and your settings will be saved for that computer.
 
+## Tips
+
+- I add `alias clipv='set_CLIPV_params && CLIProteinViewer'` to my `~/.bashrc` file. This allows me to quickly confirm my settings are reasonable before viewing the protein.
+
 ## Known Issues
 
 - The console's colors do not always return back to normal upon completion.
