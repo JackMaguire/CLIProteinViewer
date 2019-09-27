@@ -2,7 +2,7 @@
 
 CLIProteinViewer is an open-source and dependency-free tool to visually inspect your protein's structure using colored text in your console, as shown here:
 
-![CLIPV](CLIPV.png)
+![CLIPV](CLIPV256.png)
 
 This will never be a full replacement for visualization tools like PyMOL,
 but I find CLIProteinViewer to be very useful for a few small but common use cases.
