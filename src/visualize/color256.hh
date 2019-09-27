@@ -38,26 +38,29 @@ struct ColorMatcher {
 
   std::array< Color256, 256 > colors256;
 
-  int determine_closest_code( int r, int g, int b, bool must_be_system = false ) const {
+  Color256 const &
+  determine_closest_code( int r, int g, int b ) const {
     int closest_code = 0;
     float closest_score = 999;
+    Color256 * closest = nullptr;
 
     for( unsigned i = 0; i < colors.size(); ++i ){
-      Color const & c = colors[ i ];
-      if( must_be_system && ! c.is_system() ) break;
-
+      Color256 const & c = colors[ i ];
       float const r_diff = c.r - r;
       float const g_diff = c.g - g;
       float const b_diff = c.b - b;
       float const diff_sq = (r_diff*r_diff) + (g_diff*g_diff) + (b_diff*b_diff);
-      if( diff_sq < closest_score ){
+      if( diff_sq < closest_score || closest == nullptr ){
 	closest_score = diff_sq;
 	closest_code = c.code;
+	closest = &c;
       }
     }
 
-    return closest_code;
+    return * closest;
   }
+
+  
 
   ColorMatcher(){
     {
