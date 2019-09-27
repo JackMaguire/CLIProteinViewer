@@ -35,12 +35,12 @@ struct Color256 {
 };
 
 
-struct ColorMatcher {
+struct Color256Matcher {
 
   std::array< Color256, 256 > colors256;
 
   Color256 const &
-  determine_closest_code( int r, int g, int b ) const {
+  determine_closest_color( int r, int g, int b ) const {
     int closest_code = 0;
     float closest_score = 999;
     Color256 * closest = nullptr;
