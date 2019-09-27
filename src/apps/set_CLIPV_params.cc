@@ -1,3 +1,6 @@
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #include <iostream>
 #include <vector>
 
@@ -17,13 +20,46 @@
 #include <fcntl.h>
 #include <termios.h>
 
+#include <unistd.h>
+#include <sys/types.h>
+#include <pwd.h>
+
 using namespace CLIProteinViewer;
 using namespace CLIProteinViewer::visualize;
 using namespace CLIProteinViewer::color;
 using namespace CLIProteinViewer::spheres;
 using namespace CLIProteinViewer::keylistener;
 
-int main( int argc, char **argv ){
+void
+maybe_load_settings(){
+  //determine filename
+  const char *homedir;
+  if ((homedir = getenv("HOME")) == NULL) {
+    homedir = getpwuid(getuid())->pw_dir;
+  }
+  std::string filename( homedir );
+  filename += "/.clipv.settings";
+
+  //check if file exists
+  std::ifstream f( filename.c_str() );
+  if( f.good() ){
+    settings::load_from_file( filename );
+  }
+}
+
+
+int main(){
+
+  //Determine save file
+  const char *homedir;
+  if ((homedir = getenv("HOME")) == NULL) {
+    homedir = getpwuid(getuid())->pw_dir;
+  }
+  std::string new_filename( homedir );
+  new_filename += "/.clipv.settings";
+  std::cout << "Creating file: " << new_filename << std::endl;
+
+  maybe_load_settings();
 
   CLIProteinViewer::fit_display_parameters();
 
@@ -31,15 +67,10 @@ int main( int argc, char **argv ){
   std::cout << screen.height() << " x " << screen.width() << std::endl;
 
   Pose pose;
-  pose.chains[ "A" ].heavy_atoms.emplace_back(  0.5, 0.0, 0.0, 'X', 1.0 );
-  pose.chains[ "B" ].heavy_atoms.emplace_back( -0.5, 0.0, 0.0, 'X', 1.0 );
+  pose.chains[ "" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'X', "N ", 1.0 );
   pose.normalize_pose( true, true );
 
   render::draw_pose_on_screen( pose, screen );
-
-  double x_rotation = 0.0;
-  double y_rotation = 0.0;
-  double z_rotation = 0.0;
 
   printf("\n");
   for( int h = 0; h < screen.height(); ++h ){
@@ -56,7 +87,9 @@ int main( int argc, char **argv ){
   newSettings.c_lflag &= (~ICANON & ~ECHO);
   tcsetattr( fileno( stdin ), TCSANOW, &newSettings );    
 
-  while( true ) {
+  bool time_to_break = false;
+
+  while( ! time_to_break ) {
     fd_set set;
     struct timeval tv;
 
@@ -75,39 +108,22 @@ int main( int argc, char **argv ){
       read( fileno( stdin ), &c, 1 );
       int const command = int( c );
       switch( parse_int( command ) ){
-      case Key::UP:
-	z_rotation += 0.1;
-	repaint = true;
-	break;
-      case Key::DOWN:
-	z_rotation -= 0.1;
-	repaint = true;
-	break;
+
       case Key::LEFT:
-	y_rotation += 0.1;
+	settings::h_to_v_ratio *= 1.1;
 	repaint = true;
 	break;
       case Key::RIGHT:
-	y_rotation -= 0.1;
+	settings::h_to_v_ratio /= 1.1;
 	repaint = true;
 	break;
-      case Key::A:
-	x_rotation += 0.1;
-	repaint = true;
+      case Key::Q:
+	time_to_break = true;
+	repaint = false;
+	settings::save_to_file( new_filename );
+	settings::load_from_file( new_filename );
 	break;
-      case Key::D:
-	x_rotation -= 0.1;
-	repaint = true;
-	break;
-
-	// ZOOMING:
-      case Key::S:
-	settings::ZOOM *= 1.05;
-	repaint = true;
-	break;
-      case Key::W:
-	settings::ZOOM *= 0.95;
-	repaint = true;
+      default:
 	break;
       }
     }
@@ -117,9 +133,7 @@ int main( int argc, char **argv ){
     }
 
     if( repaint ){
-      Pose p( pose );
-      transform_pose( p, x_rotation, y_rotation, z_rotation );
-      render::draw_pose_on_screen( p, screen );
+      render::draw_pose_on_screen( pose, screen );
       for( int h = 0; h < screen.height(); ++h ){
 	for( int w = 0; w < screen.width(); ++w ){
 	  //std::cout << screen.pixel( h, w ).r << std::endl;

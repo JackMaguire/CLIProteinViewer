@@ -5,8 +5,6 @@
 #include <representations/spheres.hh>
 #include <render/render.hh>
 
-#include <util.hh>
-
 #include <vector>
 
 using namespace CLIProteinViewer;
@@ -15,14 +13,18 @@ using namespace CLIProteinViewer::color;
 using namespace CLIProteinViewer::spheres;
 
 int main( int argc, char **argv ){
+  std::vector< std::string > args( argv, argv + argc );
 
-  CLIProteinViewer::fit_display_parameters();
+  if( args.size() != 2 ){
+    std::cerr << "Please pass exactly one pdb file" << std::endl;
+    return -1;
+  }
 
   Screen screen;
   std::cout << screen.height() << " x " << screen.width() << std::endl;
 
-  Pose pose;
-  pose.chains[ "" ].heavy_atoms.emplace_back( 0.0, 0.0, 0.0, 'X', "N ", 1.0 );
+  Pose pose( args[1] );
+  pose.normalize_pose( true, false );
 
   render::draw_pose_on_screen( pose, screen );
 

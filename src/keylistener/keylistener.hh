@@ -23,8 +23,13 @@ constexpr int ZERO_key = 48;
 
 constexpr int W_key = 119; //capitol is 87
 constexpr int S_key = 115; //83
-constexpr int A_key = 87;  //65
+constexpr int A_key = 97;  //65
 constexpr int D_key = 100; //68
+constexpr int Q_key = 113;  //
+constexpr int E_key = 101; //
+constexpr int R_key = 114; //
+
+constexpr int delete_key = 127; //
 
 enum class Key {
   NONE,
@@ -39,6 +44,11 @@ enum class Key {
   A,
   D,
 
+  Q,
+  E,
+
+  R,
+
   ONE,
   TWO,
   THREE,
@@ -48,7 +58,9 @@ enum class Key {
   SEVEN,
   EIGHT,
   NINE,
-  ZERO
+  ZERO,
+
+  DELETE
 };
 
 //The "correct" way would be to keep a short history of the previous 3 numbers.
@@ -77,6 +89,12 @@ parse_int( int const command ){
   case S_key: return Key::S;
   case A_key: return Key::A;
   case D_key: return Key::D;
+
+  case Q_key: return Key::Q;
+  case E_key: return Key::E;
+  case R_key: return Key::R;
+
+  case delete_key: return Key::DELETE;
 
   default: return Key::NONE;
   };

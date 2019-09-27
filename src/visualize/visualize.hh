@@ -48,28 +48,24 @@ struct Screen {
 
   int height() const { return pixels.size(); }
 
+  int nrow() const { return height(); }
+
   int width() const { return pixels[0].size(); }
+
+  int ncol() const { return width(); }
 
   Pixel & pixel( int h, int w ){ return pixels[h][w]; }
 
   Pixel const & pixel( int h, int w ) const { return pixels[h][w]; }
 
+  Pixel & pixel_rowcol( int row, int col ) { return pixel( row, col ); }
+
+  Pixel const & pixel_rowcol( int row, int col ) const { return pixel( row, col ); }
+
   std::vector< std::vector< Pixel > > pixels; //outer vec is height, inner is width
 
   void set_to_splash_screen();
 };
-
-void
-draw(
-  Screen const & screen
-){
-  for( std::vector< Pixel > const & row : screen.pixels ){
-    for( Pixel const & pix : row ){
-      std::cout << "COLOR" << "MAGIC";
-    }
-    std::cout << std::endl;
-  }
-}
 
 inline
 void

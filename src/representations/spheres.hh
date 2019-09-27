@@ -16,6 +16,7 @@ struct XYZ {
   constexpr XYZ() = default;
   constexpr XYZ( XYZ const & src ) = default;
   constexpr XYZ( XYZ & src ) = default;
+  XYZ & operator=( XYZ const & src ) = default;
 
   constexpr XYZ( double X, double Y, double Z ) :
   x( X ),
@@ -27,14 +28,14 @@ struct XYZ {
   double y = 0.0;
   double z = 0.0;
 
-  constexpr void normalize() {
+  void normalize() {
     double const l = sqrt( x*x + y*y + z*z );
     x /= l;
     y /= l;
     z /= l;
   }
 
-  constexpr double & operator[]( size_t const i ){
+  double & operator[]( size_t const i ){
     switch( i ){
     case 0: return x;
     case 1: return y;
@@ -45,70 +46,44 @@ struct XYZ {
 
 };
 
-struct RotationMatrix {
-  enum class AXIS {
-    X,
-    Y,
-    Z
-  };
-
-  //value needs to be in radians
-  RotationMatrix( AXIS axis, double value ){
-    xx = xy = xz = yx = yy = yz = zx = zy = zz = 0.0;
-    switch( axis ){
-    case( X ):
-      xx = 1.0;
-      yy = zz = cos( value );
-      zy = sin( value );
-      yz = -1.0 * zy;//zy and yz might be switched
-      break;
-    case( Y ):
-      break;
-    case( Z ):
-      break;
-    }
-  }
-
-  XYZ apply( XYZ const & original ){
-    XYZ result;
-    result.x = xx * original.x + xy * original.y + xz * original.z;
-    result.y = yx * original.x + yy * original.y + yz * original.z;
-    result.z = zx * original.x + zy * original.y + zz * original.z;
-    return result;
-  }
-
-  double xx = 0.0;
-  double xy = 0.0;
-  double xz = 0.0;
-
-  double yx = 0.0;
-  double yy = 0.0;
-  double yz = 0.0;
-
-  double zx = 0.0;
-  double zy = 0.0;
-  double zz = 0.0;
-}
-
 struct Sphere : public XYZ {
 
-  constexpr Sphere() = default;
-  constexpr Sphere( Sphere const & src ) = default;
-  constexpr Sphere( Sphere && src ) = default;
+  Sphere() = default;
+  Sphere( Sphere const & src ) = default;
+  Sphere( Sphere && src ) = default;
 
-  constexpr Sphere(
+  Sphere & operator=( Sphere const & src ) = default;
+
+  Sphere(
     double X,
     double Y,
     double Z,
     char A,
+    std::array< char, 2 > A_name,
     double rad = 1.0
   ) :
   XYZ( X, Y, Z ),
     atom( A ),
+    atom_name( A_name ),
+    radius( rad )
+  {}
+
+  Sphere(
+    double X,
+    double Y,
+    double Z,
+    char A,
+    std::string const & A_name, //must be size 2
+    double rad = 1.0
+  ) :
+  XYZ( X, Y, Z ),
+    atom( A ),
+    atom_name({ A_name[ 0 ], A_name[ 1 ] }),
     radius( rad )
   {}
 
   char atom = 'X';
+  std::array< char, 2 > atom_name = {{ ' ', ' ' }};
   double radius = 1.0;
   //bool is_hydrogen = false;
 
@@ -197,35 +172,12 @@ struct Pose {
 
   }
 
-  Pose
-  create_transformed_pose(
-    double x_rotation_radian,
-    double y_rotation_radian,
-    double z_rotation_radian
+  void
+  normalize(
+    bool const position = true,
+    bool const scale = true
   ) {
-    //TODO
-    //https://math.stackexchange.com/questions/1741282/3d-calculate-new-location-of-point-after-rotation-around-origin
-    //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
-    Pose p( *this );
-
-    RotationMatrix x_rot( RotationMatrix::AXIS::X, x_rotation_radian );
-
-    auto && operate = [&]( Sphere & s ){
-      //x rotation:
-      x_rot.apply( s );
-    };
-
-    for( auto & string_chain_pair : p.chains ){
-      auto chain = string_chain_pair.second;
-      for( Sphere & s : chain.heavy_atoms ){
-	operate( s );
-      }
-      for( Sphere & s : chain.hydrogen_atoms ){
-	operate( s );
-      }
-    }
-
-    return p;
+    normalize_pose( position, scale );
   }
 
   XYZ
@@ -322,6 +274,10 @@ struct Pose {
       //std::string
       char const element = str.substr( 77, 1 )[0];//ignore 2-char elements?
 
+      char const atom_name1 = str[ 13 ];
+      char const atom_name2 = str[ 14 ];
+      std::array< char, 2 > const atom_name{{ atom_name1, atom_name2 }};
+
       if( chain == previous_chain_name && previous_chain != nullptr ){
 	//Nothing to do here?
 	//maybe some asserts?
@@ -335,14 +291,56 @@ struct Pose {
       }
 
       if( element == 'H' ){
-	previous_chain->hydrogen_atoms.emplace_back( x, y, z, element );
+	previous_chain->hydrogen_atoms.emplace_back( x, y, z, element, atom_name );
       } else {
-	previous_chain->heavy_atoms.emplace_back( x, y, z, element );
+	previous_chain->heavy_atoms.emplace_back( x, y, z, element, atom_name );
       }
 
     }
   }
 };
+
+void
+transform_pose(
+  Pose & p,
+  double x_rotation_radian,
+  double y_rotation_radian,
+  double z_rotation_radian
+) {
+  //TODO
+  //https://math.stackexchange.com/questions/1741282/3d-calculate-new-location-of-point-after-rotation-around-origin
+  //Try just basic rotations: https://en.wikipedia.org/wiki/Rotation_matrix#Basic_rotations
+  auto && operate = [=]( Sphere & s ){
+    //x rotation:
+    Sphere s0 = s;
+    s.y = s0.y * cos( x_rotation_radian ) - s0.z * sin( x_rotation_radian );
+    s.z = s0.y * sin( x_rotation_radian ) + s0.z * cos( x_rotation_radian );
+
+    //y rotation:
+    s0 = s;
+    s.z = s0.z * cos( y_rotation_radian ) - s0.x * sin( y_rotation_radian );
+    s.x = s0.z * sin( y_rotation_radian ) + s0.x * cos( y_rotation_radian );
+
+    //z rotation:
+    s0 = s;
+    s.x = s0.x * cos( z_rotation_radian ) - s0.y * sin( z_rotation_radian );
+    s.y = s0.x * sin( z_rotation_radian ) + s0.y * cos( z_rotation_radian ); 
+
+    //std::cout << s.x << "," << s.y << "," << s.z << std::endl;
+  };
+
+  for( auto & string_chain_pair : p.chains ){
+    auto & chain = string_chain_pair.second;
+    for( Sphere & s : chain.heavy_atoms ){
+      operate( s );
+    }
+    for( Sphere & s : chain.hydrogen_atoms ){
+      operate( s );
+    }
+  }
+
+}
+
 
 }
 }

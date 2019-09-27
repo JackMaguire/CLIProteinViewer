@@ -1,18 +1,43 @@
 #pragma once
 #include <array>
 
+#include <visualize/colors.hh>
+
 /*
   Useful links:
   https://jonasjacek.github.io/colors/
-  
+  https://stackoverflow.com/questions/33419215/how-to-change-the-color-of-text-to-any-color-in-c
 */
 
 namespace CLIProteinViewer {
 namespace color256 {
 
+using color::Color;
+
+struct Color256 {
+  Color256() = default;
+
+  Color256( int R, int G, int B ) :
+    r( R ),
+    g( G ),
+    b( B )
+  {}
+
+  Color256( Color256 const & src ) = default;
+  Color256( Color256 && src ) = default;
+
+  int r;
+  int g;
+  int b;
+  char color[12];
+
+};
+
+
 struct ColorMatcher {
 
   std::array< Color, 256 > colors;
+  std::array< Color256, 256 > colors256;
 
   int determine_closest_code( int r, int g, int b, bool must_be_system = false ) const {
     int closest_code = 0;
