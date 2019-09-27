@@ -15,8 +15,12 @@ grep XXX RGBs.txt | while read rgb_line; do
     done)
     #echo "{"$full_line" 'm', 0 }; std::cout << c << $x << std::endl;}"
     echo "{"
-    echo "  $full_line 'm', 0 };"
-    echo "  colors256[ $x ].chars = c;"
+    echo $(echo "    $full_line 'm', 0 };")
+    #echo "  colors256[ $x ].chars = c;"
+    echo "  std::stringstream ss;"
+    echo "  ss << c;"
+    echo "  std::string s = ss.str();"
+    echo "  colors256[ $x ].cmd = std::move( s );"
     echo "  colors256[ $x ].r = $r;"
     echo "  colors256[ $x ].g = $g;"
     echo "  colors256[ $x ].b = $b;"
