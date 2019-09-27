@@ -75,6 +75,9 @@ There is a gif below that shows what this might look like for a dimer of 4-helix
 
 Note: All of these letters are lowercase
 
+![CLIPV ATOMS](CLIPV_atoms.gif)
+
+_Shown above: cycling between '7', '8', and '9' visualizations. '0' is also an option if you have hydrogens_
 
 ### 4. Exit
 
