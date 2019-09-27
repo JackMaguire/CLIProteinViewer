@@ -298,8 +298,12 @@ int main( int argc, char **argv ){
 	  auto const & pixel = screen.pixel( h, w );
 	  auto const & color = matcher.determine_closest_color( pixel.r, pixel.g, pixel.b );
 	  std::cout << color.cmd << "X";
+	  char normal[] = { 0x1b, '[', '0', ';', '3', '9', 'm', 0 };
+	  std::cout << normal;
 #else	  
 	  print_nearest_color( screen.pixel( h, w ) );
+	  char normal[] = { 0x1b, '[', '0', ';', '3', '9', 'm', 0 };
+	  std::cout << normal;
 #endif
 	}
       }      
