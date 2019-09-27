@@ -83,7 +83,16 @@ I did not program in a quit key so just hit `ctrl+c` when you are done.
 
 ![CLIPV](CLIPV_preview.256.gif)
 
-_Shown above is a real time example of viewing the protein with pdb code 3U3B. Be patient, I opted to show the text-shrinking setup step so the cool stuff does not happen for a few seconds._
+_Shown above is a real time example of viewing the protein with pdb code 3U3B. Be patient, I opted to show the one-time setup step so the cool stuff does not happen for a few seconds._
+
+```sh
+#This is the command used to create the gif above
+bash just_install_everything_please.sh && ./set_CLIPV_params && ./CLIProteinViewer 3U3B.pdb
+
+#Note, just_install_everything_please.sh and set_CLIPV_params only need to be run once
+#In the future you can just run:
+CLIProteinViewer 3U3B.pdb
+```
 
 ## Installation
 
