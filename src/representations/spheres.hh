@@ -8,6 +8,7 @@
 #include <assert.h>
 #include <stdlib.h> //abs
 #include <math.h>
+#include <array>
 
 namespace CLIProteinViewer {
 namespace spheres {

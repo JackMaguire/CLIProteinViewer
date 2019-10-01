@@ -6,9 +6,16 @@ namespace CLIProteinViewer{
 namespace keylistener {
 
 constexpr std::array< int, 3 > LEFT_keys { 27, 91, 68 };
+constexpr int final_LEFT_key = 68;
+
 constexpr std::array< int, 3 > RIGHT_keys { 27, 91, 67 };
+constexpr int final_RIGHT_key = 67;
+
 constexpr std::array< int, 3 > UP_keys { 27, 91, 65 };
+constexpr int final_UP_key = 65;
+
 constexpr std::array< int, 3 > DOWN_keys { 27, 91, 66 };
+constexpr int final_DOWN_key = 66;
 
 constexpr int ONE_key = 49;
 constexpr int TWO_key = 50;
@@ -69,10 +76,10 @@ enum class Key {
 Key
 parse_int( int const command ){
   switch( command ){
-  case LEFT_keys[2]: return Key::LEFT;
-  case RIGHT_keys[2]: return Key::RIGHT;
-  case UP_keys[2]: return Key::UP;
-  case DOWN_keys[2]: return Key::DOWN;
+  case final_LEFT_key: return Key::LEFT;
+  case final_RIGHT_key: return Key::RIGHT;
+  case final_UP_key: return Key::UP;
+  case final_DOWN_key: return Key::DOWN;
 
   case ONE_key: return Key::ONE;
   case TWO_key: return Key::TWO;
