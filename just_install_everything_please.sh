@@ -47,10 +47,12 @@ rm .temp
 file=""
 if [ -f $HOME/.bashrc ]; then
     file="$HOME/.bashrc"
-    echo 'export PATH=$PATH:'`pwd` >> $HOME/.bashrc
+    echo 'export PATH=$PATH:'`pwd` >> $file
+    echo 'alias clipv="set_CLIPV_params && CLIProteinViewer"' >> $file
 elif [ -f $HOME/.bash_profile ]; then
     file="$HOME/.bash_profile"
-    echo 'export PATH=$PATH:'`pwd` >> $HOME/.bash_profile
+    echo 'export PATH=$PATH:'`pwd` >> $file
+    echo 'alias clipv="set_CLIPV_params && CLIProteinViewer"' >> $file
 else
     echo "Error: Unable to find $HOME/.bashrc"
     exit 1
