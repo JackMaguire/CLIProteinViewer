@@ -145,11 +145,11 @@ int main( int argc, char **argv ){
 
 #ifdef KEEP_MASTER_POSE
 	//Rotate:
-      case Key::UP:
+      case Key::A:
 	z_rotation += d_rot;
 	repaint = true;
 	break;
-      case Key::DOWN:
+      case Key::D:
 	z_rotation -= d_rot;
 	repaint = true;
 	break;
@@ -161,11 +161,11 @@ int main( int argc, char **argv ){
 	y_rotation -= d_rot;
 	repaint = true;
 	break;
-      case Key::A:
+      case Key::UP:
 	x_rotation += d_rot;
 	repaint = true;
 	break;
-      case Key::D:
+      case Key::DOWN:
 	x_rotation -= d_rot;
 	repaint = true;
 	break;
